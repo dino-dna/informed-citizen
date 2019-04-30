@@ -27,7 +27,7 @@ export function middleware (config: Config, logger: Logger): Koa.Middleware {
     if (scrapeResult.status >= 300) throw new Api500('failed to access scrape service')
     const { text, title }: { text: string, title: string } = await scrapeResult.json()
     const analyzedResult = await fetch(config.analyzerApiEndpoint, {
-      timeout: 30000,
+      timeout: 120000,
       body: JSON.stringify({ content: text, title, url: reportUrl }),
       headers: {
         accept: DEFAULT_JSON_HEADER_VALUES,
