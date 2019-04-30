@@ -1,0 +1,36 @@
+{
+  "name": "informed-citizen",
+  "version": "0.0.1",
+  "author": "cdaringe",
+  "license": "MIT",
+  "scripts": {
+    "bootstrap": "yarn && lerna bootstrap",
+    "format": "prettier-standard 'packages/*/{src,test,scripts}/**/*.{js,jsx,ts,tsx}'",
+    "lint": "standard 'packages/*/{src,test,scripts}/**/*.{js,jsx,ts,tsx}'"
+  },
+  "devDependencies": {
+    "husky": "^2.1.0",
+    "lerna": "^3.13.4",
+    "lint-staged": "^8.1.5",
+    "prettier-standard": "^9.1.1",
+    "standard": "^12.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "{src,test,scripts}/**/*.{js,jsx,ts,tsx}": [
+        "yarn format",
+        "yarn lint",
+        "git add"
+      ]
+    }
+  },
+  "dependencies": {
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0"
+  }
+}

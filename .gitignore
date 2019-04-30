@@ -1,0 +1,5 @@
+.MB_KEY
+informed.env
+node_modules
+*.log
+.DS_Store

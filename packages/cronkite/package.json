@@ -1,0 +1,36 @@
+{
+  "name": "cronkite",
+  "description": "the most trusted man in america",
+  "version": "0.0.1",
+  "main": "src/mod.ts",
+  "bin": "src/bin.ts",
+  "author": "cdaringe",
+  "license": "MIT",
+  "dependencies": {
+    "common": "^0.0.1",
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-compress": "^3.0.0",
+    "koa-helmet": "^4.1.0",
+    "node-fetch":"^2.4.1",
+    "perish": "^1.0.2",
+    "pino": "^5.12.3",
+    "debug": "^4.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.4.5",
+    "@types/koa": "^2.0.48",
+    "@types/koa-router": "^7.0.40",
+    "@types/koa-helmet":"^3.1.2",
+    "@types/node-fetch": "^2.3.3",
+    "@types/node":"^11.13.8",
+    "@types/pino": "^5.8.6",
+    "@types/debug": "^4.1.4",
+    "ts-node": "^8.1.0",
+    "nodemon": "^1.18.11"
+  },
+  "scripts": {
+    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec 'ts-node' src/bin.ts"
+  }
+}

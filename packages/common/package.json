@@ -1,0 +1,28 @@
+{
+  "name": "common",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "license": "PRIVATE",
+  "main": "src/index.js",
+  "scripts": {
+    "bootstrap": "cd ../../ ; yarn bootstrap",
+    "build": "tsc",
+    "clean": "del 'src/**/*.{js,d.ts,map}'",
+    "prebuild": "run-p clean*",
+    "prestart": "run-p clean*",
+    "start": "tsc --watch"
+  },
+  "author": "cdaringe",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "del-cli":"^1.1.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^3.4.5",
+    "@types/node": "^11"
+  },
+  "peerDependencies": {
+    "@types/node": "^11"
+  }
+}

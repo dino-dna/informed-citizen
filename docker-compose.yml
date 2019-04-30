@@ -1,0 +1,12 @@
+version: "3"
+services:
+  scraper:
+    image: smarp/newspaper-api
+    ports:
+      - 38765:38765
+  analyzer:
+    image: machinebox/fakebox
+    env_file:
+      - informed.env
+    ports:
+      - 8080:8080
