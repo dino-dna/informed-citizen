@@ -4,16 +4,26 @@
   "author": "cdaringe",
   "license": "MIT",
   "scripts": {
+    "build": "ts-node scripts/build.ts",
     "bootstrap": "yarn && lerna bootstrap",
-    "format": "prettier-standard 'packages/*/{src,test,scripts}/**/*.{js,jsx,ts,tsx}'",
-    "lint": "standard 'packages/*/{src,test,scripts}/**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier-standard 'packages/*/{src,test,scripts}/**/*.{ts,tsx}'",
+    "lint": "standardx 'packages/*/{src,test,scripts}/**/*.{ts,tsx}'"
   },
   "devDependencies": {
-    "husky": "^2.1.0",
+    "@types/bluebird": "^3.5.26",
+    "@types/execa": "^0.9.0",
+    "@types/node": "^11.13.9",
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "@typescript-eslint/parser": "^1.7.0",
+    "bluebird": "^3.5.4",
+    "execa": "^1.0.0",
+    "husky": "^2.2.0",
     "lerna": "^3.13.4",
     "lint-staged": "^8.1.5",
     "prettier-standard": "^9.1.1",
-    "standard": "^12.0.1"
+    "standardx": "^3.0.1",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
   },
   "husky": {
     "hooks": {
@@ -22,7 +32,7 @@
   },
   "lint-staged": {
     "linters": {
-      "{src,test,scripts}/**/*.{js,jsx,ts,tsx}": [
+      "{src,test,scripts}/**/*.{ts,tsx}": [
         "yarn format",
         "yarn lint",
         "git add"
@@ -32,5 +42,19 @@
   "dependencies": {
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0"
+  },
+  "eslintConfig": {
+    "rules": {
+      "no-unused-vars": 0
+    }
+  },
+  "standardx": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ],
+    "ignore": [
+      "**/*.d.ts"
+    ]
   }
 }

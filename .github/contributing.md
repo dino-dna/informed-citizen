@@ -1,14 +1,14 @@
 # contributing
 
-## pre-reqs
+## getting started
+
+### pre-reqs
 
 install:
 
 - nodejs 10.+
 - docker, 18.*
 - yarn, latest
-
-## getting started
 
 this project houses multiple artifacts.  at the time of writing:
 
@@ -24,7 +24,6 @@ this project uses [lerna](https://www.npmjs.com/package/lerna) to link the depen
 
 - ensure `NODE_ENV` is set in your environment.  e.g. `echo NODE_ENV=development >> ~/.bashrc && . ~/.bashrc`
 - cd `/path/to/project`
-- `yarn` to install the root project dependencies
 - `yarn bootstrap` to install and link all child project dependencies
   - **never `yarn add <thing>`** into a project directly, unless you know what you are doing.  it's advisable to add dependencies to the relevant package.json and run `yarn bootstrap` again from the root project.  this ensures that all links remain intact between packages!
 - `yarn build` to compile all sub projects.

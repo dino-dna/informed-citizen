@@ -1,6 +1,6 @@
 import * as Koa from 'koa'
 import { ApiError } from '../errors'
-import { Logger } from '../util/logger';
+import { Logger } from '../util/logger'
 
 export function createMiddleware (logger: Logger) {
   return async function middleware (ctx: Koa.BaseContext, next: any) {
@@ -10,7 +10,8 @@ export function createMiddleware (logger: Logger) {
       if (err instanceof ApiError) {
         let apiErr = err as ApiError
         ctx.status =
-          (apiErr as any).status || (apiErr.constructor as typeof ApiError).status
+          (apiErr as any).status ||
+          (apiErr.constructor as typeof ApiError).status
         ctx.body = {
           error:
             apiErr.message ||
