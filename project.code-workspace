@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "packages/cronkite"
+    },
+    {
+			"path": "packages/ui"
 		}
 	],
 	"settings": {}

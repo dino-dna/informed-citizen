@@ -1,0 +1,5 @@
+# ArticleAnalysisCard
+
+```jsx
+<ArticleAnalysisCard />
+```
