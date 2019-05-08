@@ -30,8 +30,7 @@ this project uses [lerna](https://www.npmjs.com/package/lerna) to link the depen
 
 ### configuration
 
-- In `packages/api`, there is a `.env.example` file.  you will want to create a `.env.<development|production>` file
-    - ask a peer for any secrets unclear which to use
+- add `ENV` variables to a `informed.env` file, using `informed.env.example` as the guiding template
 
 ## run
 

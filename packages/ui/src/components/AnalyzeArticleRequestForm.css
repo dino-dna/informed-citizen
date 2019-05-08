@@ -1,27 +1,25 @@
 .AnalyzeArticleRequestForm {
   display: block;
-  /* max-width: 600px; */
-  /* width: 80vw; */
   min-width: 300px;
-  text-align: center;
   box-sizing: border-box;
 }
+
 .AnalyzeArticleRequestForm_url {
-  border-radius: 2px;
-  border: 1px lightgray solid;
-  font-size: 20px;
+  /* border-radius: 2px; */
+  /* border: 1px lightgray solid; */
+  font-size: 75px;
   padding: 6px;
   min-width: 250px;
   width: 100%;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
 }
 
 .AnalyzeArticleRequestForm_submit {
   width: 100%;
-  padding: 10px;
+  /* padding: 10px;
   background: rgb(65, 65, 255);
   color: white;
   border: 0;
   border-radius: 4px;
-  margin-top: 4px;
+  margin-top: 4px; */
 }

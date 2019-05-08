@@ -1,4 +1,11 @@
 .article_analysis_card--container {
   border-radius: 4px;
   box-shadow: 0 0 4px 1px lightslategray;
+  padding: 10px;
+}
+
+.article_analysis_card--first-glance {
+  display: flex;
+  align-items: center;
+  padding: 8px;
 }

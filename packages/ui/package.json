@@ -3,13 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reach/router":"^1.2.1",
     "@types/jest": "24.0.12",
     "@types/node": "11.13.9",
     "@types/react": "16.8.15",
     "@types/react-dom": "16.8.4",
     "common": "^0.0.1",
+    "redux-observable": "^1.1.0",
+    "redux": "^4.0.1",
+    "react-redux": "^7.0.3",
+    "redux-logger":"^3.0.6",
+    "rxjs": "^6.5.1",
+    "papercss": "^1.6.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-css-spinners": "^1.0.1",
     "react-scripts": "3.0.0",
     "typescript": "3.4.5"
   },
@@ -35,6 +43,11 @@
     ]
   },
   "devDependencies": {
-    "react-styleguidist": "^9.0.9"
-  }
+    "@types/reach__router":"^1.2.4",
+    "react-styleguidist": "^9.0.9",
+    "@types/redux": "^3.6.0",
+    "@types/react-redux": "^7.0.8",
+    "@types/redux-logger":"^3.0.7"
+  },
+  "proxy": "http://localhost:7777/"
 }

@@ -1,0 +1,8 @@
+FROM node:alpine
+RUN mkdir /informed
+WORKDIR /informed
+COPY . .
+RUN yarn bootstrap
+WORKDIR /informed/packages/cronkite
+RUN yarn build -p tsconfig.production.json
+CMD ["node", "./src/bin.js"]

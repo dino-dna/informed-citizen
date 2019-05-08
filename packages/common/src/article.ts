@@ -27,5 +27,47 @@ export function fromRaw (raw: ArticleScrapeRaw): ArticleScrape {
   }
 }
 
+export interface Entity {
+  end: number
+  start: number
+  text: string
+  type: string
+}
+
+export type DomainCategories =
+  | 'unsure'
+  | 'bias'
+  | 'clickbait'
+  | 'conspiracy'
+  | 'credible'
+  | 'fake'
+  | 'hate'
+  | 'junksci'
+  | 'parody'
+  | 'political'
+  | 'rumor'
+  | 'satire'
+  | 'state'
+  | 'trusted'
+  | 'unknown'
+  | 'unreliable'
+
+
 export interface ArticleAnalysis {
+  content: {
+    decision: 'bias' | 'impartial' | 'unsure'
+    entities: Entity[]
+    keywords: { keyword: string }[]
+    score: number
+  }
+  title: {
+    decision: 'bias' | 'impartial' | 'unsure'
+    entities: Entity[]
+    score: number
+  }
+  success: boolean
+  domain: {
+    category: DomainCategories
+    domain: string
+  }
 }

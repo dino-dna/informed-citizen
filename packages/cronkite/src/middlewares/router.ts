@@ -47,7 +47,7 @@ export function middleware (config: Config, logger: Logger): Koa.Middleware {
       throw new Api500('failed to access analyze service')
     }
     const analysis = await analyzedResult.json()
-    ctx.body = analysis
+    ctx.body = { analysis, text, title }
   })
   return router.routes() as any
 }

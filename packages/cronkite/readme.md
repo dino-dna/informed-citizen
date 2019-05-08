@@ -5,3 +5,9 @@
 ## contributing
 
 - `yarn start`
+
+## routes
+
+- see `src/middleware/router.ts`
+
+### GET /api/router?url=...
