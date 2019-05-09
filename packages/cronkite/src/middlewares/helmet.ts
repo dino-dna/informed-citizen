@@ -6,9 +6,9 @@ export function createMiddleware () {
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'", 'data:', '*.amazonaws.com'],
-        fontSrc: ["'self'", 'data:'],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"]
+        fontSrc: ["'self'", 'data:', '*.googleapis.com', '*.gstatic.com'],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'", '*.googleapis.com', '*.gstatic.com']
       }
     },
     referrerPolicy: { policy: 'no-referrer' }

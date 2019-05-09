@@ -5,6 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "ts-node scripts/build.ts",
+    "build:docker": "docker build -t cdaringe/cronkite -f Dockerfile.cronkite .",
+    "publish:docker": "docker push cdaringe/cronkite",
     "bootstrap": "yarn && lerna bootstrap",
     "format": "prettier-standard 'packages/*/{src,test,scripts}/**/*.{ts,tsx}'",
     "lint": "standardx 'packages/*/{src,test,scripts}/**/*.{ts,tsx}'"

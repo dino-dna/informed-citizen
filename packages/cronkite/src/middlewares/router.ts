@@ -10,7 +10,7 @@ const DEFAULT_JSON_HEADER_VALUES = 'application/json; charset=utf-8'
 
 export function middleware (config: Config, logger: Logger): Koa.Middleware {
   const router = new Router()
-  router.get('/api/report', async ctx => {
+  router.get('/report', async ctx => {
     const {
       query: { url: reportUrl = '' }
     } = ctx
