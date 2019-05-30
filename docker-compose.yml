@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 services:
   scraper:
     image: smarp/newspaper-api
@@ -10,3 +10,14 @@ services:
       - informed.env
     ports:
       - 8080:8080
+  informeddb:
+    image: postgres:alpine
+    env_file:
+      - informed.env
+    ports:
+      - 5432:5432
+    command: -c "log_statement=all" -c "log_min_error_statement=error"
+    volumes:
+      - type: bind
+        source: ./scripts/informeddb
+        target: /docker-entrypoint-initdb.d
