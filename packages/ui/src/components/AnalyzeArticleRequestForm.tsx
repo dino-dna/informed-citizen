@@ -1,7 +1,8 @@
 import './AnalyzeArticleRequestForm.css'
 import React, { useState } from 'react'
 
-const FAKE_ARTICLE_URL = 'https://www.breitbart.com/europe/2017/01/03/dortmund-mob-attack-police-church-alight/'
+const FAKE_ARTICLE_URL =
+  'https://www.breitbart.com/europe/2017/01/03/dortmund-mob-attack-police-church-alight/'
 
 export interface Props extends React.HTMLAttributes<HTMLFormElement> {
   onAnalzye: (url: string) => any
@@ -22,11 +23,13 @@ const AnalyzeArticleRequestForm: React.FC<Props> = ({
         <button
           type='button'
           className='btn-small'
-          onClick={() => {
+          onClick={evt => {
+            evt.preventDefault()
+            evt.stopPropagation()
             setUrl(FAKE_ARTICLE_URL)
             onAnalzye(FAKE_ARTICLE_URL)
           }}
-          style={{marginLeft: 10}}
+          style={{ marginLeft: 10 }}
         >
           Try it
         </button>
@@ -44,9 +47,10 @@ const AnalyzeArticleRequestForm: React.FC<Props> = ({
       <button
         className='AnalyzeArticleRequestForm_submit btn-large paper-btn btn-secondary'
         type='button'
-        style={{marginTop: 6}}
+        style={{ marginTop: 6 }}
         onClick={evt => {
           evt.preventDefault()
+          evt.stopPropagation()
           onAnalzye(url)
         }}
         children='Analyze'

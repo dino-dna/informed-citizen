@@ -12,7 +12,7 @@ import Koa, { Middleware } from 'koa'
 
 const debug = createDebug('informed:middleware')
 
-function toDebugMiddleware (meta: { fn: Middleware, name: string}, i: number) {
+function toDebugMiddleware (meta: { fn: Middleware; name: string }, i: number) {
   const middlewareDebugLogger: Koa.Middleware = async (ctx, next) => {
     debug(`entering middleware ${i} [${meta.name}] `)
     await meta.fn(ctx, next)
@@ -34,7 +34,8 @@ export function createCommon (config: Config, logger: Logger) {
   return middlewares
 }
 
-export function createApi (config: Config, logger: Logger ) {
-  return [{ fn: routerMiddleware(config, logger), name: 'router' }]
-    .map(toDebugMiddleware)
+export function createApi (config: Config, logger: Logger) {
+  return [{ fn: routerMiddleware(config, logger), name: 'router' }].map(
+    toDebugMiddleware
+  )
 }

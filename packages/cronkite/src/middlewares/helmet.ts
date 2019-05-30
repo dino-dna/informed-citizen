@@ -8,7 +8,12 @@ export function createMiddleware () {
         defaultSrc: ["'self'", 'data:', '*.amazonaws.com'],
         fontSrc: ["'self'", 'data:', '*.googleapis.com', '*.gstatic.com'],
         scriptSrc: ["'self'", "'unsafe-inline'"],
-        styleSrc: ["'self'", "'unsafe-inline'", '*.googleapis.com', '*.gstatic.com']
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          '*.googleapis.com',
+          '*.gstatic.com'
+        ]
       }
     },
     referrerPolicy: { policy: 'no-referrer' }

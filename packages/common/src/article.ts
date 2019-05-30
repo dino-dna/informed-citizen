@@ -3,7 +3,7 @@ export interface ArticleScrapeRaw {
   authors: string[]
   html: string
   movies: string[]
-  publish_date: string
+  publish_date: string // eslint-disable-line
   text: string
   title: string
   topimage: string
@@ -14,7 +14,7 @@ export interface ArticleScrape {
   authors: string[]
   html: string
   movies: string[]
-  publish_date: Date
+  publish_date: Date // eslint-disable-line
   text: string
   title: string
   topimage: string
@@ -51,7 +51,6 @@ export type DomainCategories =
   | 'trusted'
   | 'unknown'
   | 'unreliable'
-
 
 export interface ArticleAnalysis {
   content: {

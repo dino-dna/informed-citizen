@@ -2,9 +2,9 @@ import { ArticleAnalysis } from 'common'
 import { FSA, ErrorFSA, Store } from '../../types'
 import { Reducer } from 'redux'
 import { ofType } from 'redux-observable'
-import { mergeMap, map } from 'rxjs/operators'
-import { from } from 'rxjs';
-import { analyze } from '../../util/analyze';
+import { mergeMap } from 'rxjs/operators'
+import { from } from 'rxjs'
+import { analyze } from '../../util/analyze'
 
 type RequestAnalysis = FSA<'REQUEST_ANALYSIS', { url: string }>
 type HandleRequestAnalysisError = ErrorFSA<'HANDLE_REQUEST_ANALYSIS_ERROR'>
@@ -31,16 +31,25 @@ const INITIAL_STATE: AnalysisState = {
   error: null
 }
 
-export const reducer: Reducer<AnalysisState, AnalysisActions> = (state = INITIAL_STATE, action: AnalysisActions) => {
+export const reducer: Reducer<AnalysisState, AnalysisActions> = (
+  state = INITIAL_STATE,
+  action: AnalysisActions
+) => {
   switch (action.type) {
     case 'REQUEST_ANALYSIS':
       return { ...state, loading: true }
     case 'HANDLE_REQUEST_ANALYSIS_ERROR':
       return { ...state, loading: false, error: action.payload.message }
     case 'HANDLE_REQUEST_ANALYSIS_SUCCESS':
-      return { ...state, error: null, loading: false, value: action.payload.analysis }
+      return {
+        ...state,
+        error: null,
+        loading: false,
+        value: action.payload.analysis
+      }
+    default:
+      return state as AnalysisState
   }
-  return state
 }
 
 const requestAnalysisEpic$: Store.Epic = (action$, state$) =>
@@ -49,20 +58,27 @@ const requestAnalysisEpic$: Store.Epic = (action$, state$) =>
     mergeMap(action => {
       // action.
       const reqAction = action as RequestAnalysis
-      return from(analyze({ fetch: window.fetch, url: reqAction.payload.url })
-        .then(payload => ({
-          type: 'HANDLE_REQUEST_ANALYSIS_SUCCESS',
-          payload
-        }) as HandleRequestAnalysisSuccess)
-        .catch(err => ({
-          type: 'HANDLE_REQUEST_ANALYSIS_ERROR',
-          payload: new Error(`bummer. failed to analyze ${reqAction.payload.url}`),
-          error: true
-        }) as HandleRequestAnalysisError)
+      return from(
+        analyze({ fetch: window.fetch, url: reqAction.payload.url })
+          .then(
+            payload =>
+              ({
+                type: 'HANDLE_REQUEST_ANALYSIS_SUCCESS',
+                payload
+              } as HandleRequestAnalysisSuccess)
+          )
+          .catch(
+            () =>
+              ({
+                type: 'HANDLE_REQUEST_ANALYSIS_ERROR',
+                payload: new Error(
+                  `bummer. failed to analyze ${reqAction.payload.url}`
+                ),
+                error: true
+              } as HandleRequestAnalysisError)
+          )
       )
     })
   )
 
-export const epics = [
-  requestAnalysisEpic$
-]
+export const epics = [requestAnalysisEpic$]

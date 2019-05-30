@@ -1,8 +1,16 @@
-import { ArticleAnalysis } from "common";
+import { ArticleAnalysis } from 'common'
 
-export const analyze = async ({ url, fetch }: { url: string, fetch: GlobalFetch['fetch'] }) => {
+export const analyze = async ({
+  url,
+  fetch
+}: {
+  url: string
+  fetch: GlobalFetch['fetch']
+}) => {
   const res = await fetch(`/api/report?url=${url}`)
-  if (res.status >= 300) throw new Error(`failed to get analysis: ${res.statusText}`)
+  if (res.status >= 300) {
+    throw new Error(`failed to get analysis: ${res.statusText}`)
+  }
   try {
     const json = await res.json()
     return json as { analysis: ArticleAnalysis }

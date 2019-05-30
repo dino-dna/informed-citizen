@@ -3,7 +3,7 @@ import 'papercss/dist/paper.min.css'
 import { ConnectedApp } from './App'
 import { createStore } from './state/store'
 import { Provider } from 'react-redux'
-import * as serviceWorker from './serviceWorker'
+// import * as serviceWorker from './serviceWorker'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
