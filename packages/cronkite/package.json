@@ -39,7 +39,7 @@
   "scripts": {
     "build": "tsc",
     "postinstall": "",
-    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec 'ts-node' src/bin.ts",
-    "prestart": "if [ ! -f .env ]; then npx ts-node scripts/link-env.ts; fi;"
+    "prestart": "if [ ! -f .env ]; then npx ts-node scripts/link-env.ts; fi;",
+    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec 'ts-node' src/bin.ts"
   }
 }
