@@ -2,9 +2,13 @@
 
 > the most trusted man in america
 
-## contributing
+## usage
 
 - `yarn start`
+
+### configuration'
+
+see `./src/bin.ts::Config` to see configuration options
 
 ## routes
 

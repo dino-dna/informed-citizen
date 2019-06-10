@@ -1,13 +1,13 @@
 import './App.css'
+import { connect } from 'react-redux'
 import { Router } from '@reach/router'
+import { Store } from './types'
 import AnalyzeArticleRequestForm from './components/AnalyzeArticleRequestForm'
+import ArticleAnalysisCard from './components/ArticleAnalysisCard'
 import Nav from './Nav'
 import React from 'react'
 import Routable from './components/Routableable'
-import { Store } from './types'
-import { connect } from 'react-redux'
-import ArticleAnalysisCard from './components/ArticleAnalysisCard'
-import { Ripple } from 'react-css-spinners'
+const Ripple = require('react-css-spinners').Ripple
 
 const App: React.FC = _props => {
   const props = _props as Store.All & Store.WithDispatch
