@@ -17,7 +17,7 @@ services:
     ports:
       - 5432:5432
     command: -c "log_statement=all" -c "log_min_error_statement=error"
-    volumes:
-      - type: bind
-        source: ./scripts/informeddb
-        target: /docker-entrypoint-initdb.d
+    # volumes:
+    #   - type: bind
+    #     source: ./scripts/informeddb
+    #     target: /docker-entrypoint-initdb.d

@@ -15,6 +15,16 @@
       "protocol": "inspector",
     },
     {
+      "name": "create migration",
+      "type": "node",
+      "request": "launch",
+      "args": ["${workspaceRoot}/node_modules/.bin/knex", "migrate:make", "init", "-x", "ts"],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+    },
+    {
       "name": "Current TS File",
       "type": "node",
       "request": "launch",

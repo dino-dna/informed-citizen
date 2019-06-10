@@ -8,6 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "common": "^0.0.1",
+    "dotenv-safe":"^6.1.0",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
     "koa-bodyparser": "^4.2.1",
@@ -19,27 +20,39 @@
     "perish": "^1.0.2",
     "pino": "^5.12.3",
     "debug": "^4.1.1",
+    "lodash":"^4.17.11",
     "pg":"^7.11.0",
     "knex":"^0.17.0"
   },
   "devDependencies": {
+    "del-cli":"^2.0.0",
     "typescript": "^3.4.5",
+    "@types/dotenv":"^6.1.1",
+    "@types/dotenv-safe": "5.0.0",
     "@types/koa": "^2.0.48",
     "@types/koa-router": "^7.0.40",
     "@types/koa-mount":"^3.0.1",
     "@types/koa-static":"^4.0.1",
     "@types/koa-helmet":"^3.1.2",
     "@types/node-fetch": "^2.3.3",
+    "@types/lodash":"^4.14.134",
     "@types/node":"^11.13.8",
     "@types/pino": "^5.8.6",
     "@types/debug": "^4.1.4",
     "ts-node": "^8.1.0",
-    "nodemon": "^1.18.11"
+    "nodemon": "^1.18.11",
+    "npm-run-all":"^4.1.5"
   },
   "scripts": {
     "build": "tsc",
-    "postinstall": "",
-    "prestart": "if [ ! -f .env ]; then npx ts-node scripts/link-env.ts; fi;",
+    "clean": "del '*.js' '{src,scripts}/**/*.js'",
+    "create:migration": "knex --knexfile knexfile.ts migrate:make -x ts",
+    "link:env-files": "if [[ ! -f .env || ! -f .env.example ]]; then npx ts-node scripts/link-env.ts; fi;",
+    "migrate:db:down": "knex --knexfile knexfile.ts migrate:rollback",
+    "migrate:db:up": "knex --knexfile knexfile.ts migrate:latest",
+    "migrate": "run-s migrate:db:down migrate:db:up",
+    "prebuild": "run-p clean",
+    "prestart": "run-p link:env-files",
     "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec 'ts-node' src/bin.ts"
   }
 }
