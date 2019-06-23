@@ -5,7 +5,6 @@ const { POSTGRES_DB, CRONKITE_DB_PASSWORD, CRONKITE_DB_USER } = process.env
 export async function up (knex: Knex): Promise<any> {
   await knex.raw(`
     create user ${CRONKITE_DB_USER} with encrypted password '${CRONKITE_DB_PASSWORD}';
-    grant all privileges on database ${POSTGRES_DB} to ${CRONKITE_DB_USER};
   `)
   await knex.raw(`
     create table analyses (
@@ -19,6 +18,14 @@ export async function up (knex: Knex): Promise<any> {
       ('htts://bad.org', '{"thing": 1, "thang": "zone"}'),
       ('htts://evil.net', '{"bad stuff": 1, "thang": "zone"}');;
   `)
+  await knex.raw(`
+    grant all privileges on database ${POSTGRES_DB} to ${CRONKITE_DB_USER};
+  `)
 }
 
-export async function down (knex: Knex): Promise<any> {}
+export async function down (knex: Knex): Promise<any> {
+  await knex.raw(`
+    drop table analyses;
+    drop user ${CRONKITE_DB_USER};
+  `)
+}

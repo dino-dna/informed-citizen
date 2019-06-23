@@ -72,7 +72,7 @@
     "migrate:db:up": "knex --knexfile knexfile.ts migrate:latest",
     "migrate": "run-s migrate:db:down migrate:db:up",
     "prebuild": "run-p clean",
-    "prestart": "run-p link:env-files",
+    "prestart": "run-s link:env-files migrate",
     "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec 'ts-node' src/bin.ts"
   }
 }

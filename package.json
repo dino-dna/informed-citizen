@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "run-p start:*",
-    "start:services": "docker-compose up",
+    "start:services": "docker-compose up --force-recreate",
     "start:cronkite": "cd packages/cronkite && yarn start",
     "build": "ts-node scripts/build.ts",
     "build:docker": "docker build -t cdaringe/cronkite -f Dockerfile.cronkite .",

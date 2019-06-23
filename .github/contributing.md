@@ -35,13 +35,13 @@ this project uses [lerna](https://www.npmjs.com/package/lerna) to link the depen
 ## run
 
   - trust the dev cert at `./reverse-proxy/sercurity/cert.pem`
-  - `yarn start` to start:
-      - required services (scraper, analyzer, database, dev-only reverse-proxy),
-      - cronkite, the api & isomorphicjs ui server
+  - `yarn start:services` to start required services (scraper, analyzer, database, dev-only reverse-proxy),
+  - `cd packages/cronkite` & `yarn start` to:
+    - launch the api,
+    - migrate the db
+    - serve thi isomorphicjs ui app
 
 edit freely.
-
-alternatively, run `yarn start` in each desired project.  see each package for individual package instructions.
 
 ### troubleshooting
 
