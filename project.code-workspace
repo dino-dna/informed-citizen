@@ -1,17 +1,17 @@
 {
-	"folders": [
-		{
-			"path": "."
+  "folders": [
+    {
+      "path": "."
     },
     {
-			"path": "packages/common"
-		},
-		{
-			"path": "packages/cronkite"
+      "path": "packages/common"
     },
     {
-			"path": "packages/ui"
-		}
-	],
-	"settings": {}
+      "path": "packages/cronkite"
+    },
+    // {
+    // 	"path": "packages/ui"
+    // }
+  ],
+  "settings": {}
 }

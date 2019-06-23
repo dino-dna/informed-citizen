@@ -4,12 +4,15 @@
   "author": "cdaringe",
   "license": "MIT",
   "scripts": {
+    "start": "run-p start:*",
+    "start:services": "docker-compose up",
+    "start:cronkite": "cd packages/cronkite && yarn start",
     "build": "ts-node scripts/build.ts",
     "build:docker": "docker build -t cdaringe/cronkite -f Dockerfile.cronkite .",
     "publish:docker": "docker push cdaringe/cronkite",
     "bootstrap": "yarn && lerna bootstrap",
     "format": "prettier-standard 'packages/*/{src,test,scripts}/**/*.{ts,tsx}'",
-    "lint": "standardx 'packages/*/{src,test,scripts}/**/*.{ts,tsx}'",
+    "lint": "standardx 'packages/*/{src,test,scripts}/**/*.{ts,tsx}' --fix",
     "prelint": "echo upgrade TS only after https://github.com/typescript-eslint/typescript-eslint#supported-typescript-version supports latest",
     "precommit": "lint-staged"
   },
@@ -39,7 +42,7 @@
     "linters": {
       "{src,test,scripts,packages/*}/**/*.{ts,tsx}": [
         "yarn format",
-        "yarn lint --fix",
+        "yarn lint",
         "git add"
       ]
     }

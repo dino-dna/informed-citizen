@@ -17,6 +17,19 @@ services:
     ports:
       - 5432:5432
     command: -c "log_statement=all" -c "log_min_error_statement=error"
+
+  reverse_proxy:
+    image: nginx:alpine
+    ports:
+      - 443:443
+    volumes:
+      - type: bind
+        source: ./reverse-proxy/conf
+        target: /etc/nginx/conf.d
+      - type: bind
+        source: ./reverse-proxy/security
+        target: /security
+
     # volumes:
     #   - type: bind
     #     source: ./scripts/informeddb

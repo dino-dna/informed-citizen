@@ -6,6 +6,7 @@ const ScoringThumb: React.FC<
     score: number
   }
 > = ({ style = {}, score, ...rest }) => {
+  // eslint-disable-start
   const { color, degrees } =
     score >= 0.85
       ? { color: 'green', degrees: 0 }
@@ -14,6 +15,7 @@ const ScoringThumb: React.FC<
         : score >= 0.65
           ? { color: 'orange', degrees: 90 }
           : { color: 'red', degrees: 180 }
+  // eslint-disable-end
   return (
     <Thumb
       style={{

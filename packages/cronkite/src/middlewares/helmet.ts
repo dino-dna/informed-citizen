@@ -5,13 +5,16 @@ export function createMiddleware () {
   const options = {
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'", 'data:', '*.amazonaws.com'],
+        defaultSrc: isDev
+          ? ['*']
+          : ["'self'", 'data:', '*.amazonaws.com', '*.unpkg.com', 'unpkg.com'],
         fontSrc: ["'self'", 'data:', '*.googleapis.com', '*.gstatic.com'],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: isDev ? ['*'] : ["'self'", "'unsafe-inline'"],
         styleSrc: [
           "'self'",
           "'unsafe-inline'",
           '*.googleapis.com',
+          'unpkg.com',
           '*.gstatic.com'
         ]
       }
