@@ -20,12 +20,15 @@ export async function up (knex: Knex): Promise<any> {
   `)
   await knex.raw(`
     grant all privileges on database ${POSTGRES_DB} to ${CRONKITE_DB_USER};
+    grant all privileges on all tables in schema public to ${CRONKITE_DB_USER};
   `)
 }
 
 export async function down (knex: Knex): Promise<any> {
   await knex.raw(`
-    drop table analyses;
+    revoke all privileges on all tables in schema public from ${CRONKITE_DB_USER};
+    revoke all privileges on database ${POSTGRES_DB} from ${CRONKITE_DB_USER};
     drop user ${CRONKITE_DB_USER};
+    drop table analyses cascade;
   `)
 }

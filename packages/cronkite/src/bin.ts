@@ -2,6 +2,7 @@ import { Config } from './config'
 import { create } from './util/logger'
 import { start } from './mod'
 import path from 'path'
+import dotenv from 'dotenv-safe'
 
 require('perish')
 
@@ -12,6 +13,9 @@ const uiHtmlEntryFilename = path.resolve(
 )
 const staticDirname = path.resolve(__dirname, 'public')
 
+dotenv.load({
+  path: path.resolve(projectRootDirname, `.env.${process.env.NODE_ENV}`)
+})
 const config: Config = {
   analyzerApiEndpoint:
     process.env.ANALYZER_API_ENDPOINT || 'http://localhost:8080/fakebox/check',

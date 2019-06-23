@@ -5,6 +5,7 @@ import { middleware as bodyParser } from './body-parser'
 import { middleware as compress } from './compress'
 import { middleware as createLoggerMiddleware } from './logger'
 import { createMiddleware as createErrorHandlerMiddleware } from './error-handler'
+import { createMiddleware as createLazyDbMiddleware } from './lazy-db'
 import { middleware as responseTime } from './response-time'
 import { middleware as routerMiddleware } from './router'
 import createDebug from 'debug'
@@ -22,13 +23,14 @@ function toDebugMiddleware (meta: { fn: Middleware; name: string }, i: number) {
   return middlewareDebugLogger
 }
 
-export function createCommon (config: Config, logger: Logger) {
+export async function createCommon (config: Config, logger: Logger) {
   const middlewares = [
     { fn: responseTime, name: 'responseTime' },
     { fn: createLoggerMiddleware(logger), name: 'logger' },
     { fn: createErrorHandlerMiddleware(logger), name: 'errorHandler' },
     { fn: createHelmetMiddleware(), name: 'helmet' },
     { fn: bodyParser, name: 'bodyParser' },
+    { fn: await createLazyDbMiddleware(logger), name: 'lazyDb' },
     { fn: compress, name: 'compress' }
   ].map(toDebugMiddleware)
   return middlewares
