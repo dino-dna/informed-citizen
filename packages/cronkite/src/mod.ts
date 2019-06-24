@@ -6,20 +6,17 @@ import {
 import { createParcelMiddleware } from './middlewares/parcel'
 import { Logger } from './util/logger'
 import { resolve, extname } from 'path'
+import compose from 'koa-compose'
 import Koa from 'koa'
-import mount from 'koa-mount'
 import serve from 'koa-static'
 
 export async function start (config: Config, util: { logger: Logger }) {
   const app = new Koa()
-  const api = new Koa()
-  const webapp = new Koa()
   const staticMiddleware = serve(config.paths.staticDirname, { defer: false })
-  ;(await createCommonMiddlewares(config, util.logger)).forEach(mw =>
-    app.use(mw)
+  app.use(compose(await createCommonMiddlewares(config, util.logger)))
+  const apiMiddleware: Koa.Middleware = compose(
+    createApiMiddlewares(config, util.logger)
   )
-  createApiMiddlewares(config, util.logger).forEach(mw => api.use(mw))
-
   const parcelMiddleware = createParcelMiddleware({
     entryHtmlFilename: config.paths.uiHtmlEntryFilename,
     parcelOptions: {
@@ -28,8 +25,9 @@ export async function start (config: Config, util: { logger: Logger }) {
     },
     staticMiddleware
   })
-  webapp.use((ctx, next) => {
-    const isApiCall = ctx.path.match(/\/api/)
+  app.use((ctx, next) => {
+    const isApiCall = !!ctx.path.match(/\/api/)
+    if (isApiCall) return apiMiddleware(ctx, next)
     const extension = extname(ctx.path)
     const isHtml = extension === '.html'
     if (!isApiCall && (isHtml || !extension)) return parcelMiddleware(ctx, next)
@@ -37,8 +35,6 @@ export async function start (config: Config, util: { logger: Logger }) {
       !isApiCall && ctx.status === 404 ? parcelMiddleware(ctx, next) : next()
     )
   })
-  app.use(mount('/api', api))
-  app.use(mount('/', webapp))
   app.listen(config.port)
   util.logger.info(`📡 listening on ${config.port}`)
 }
