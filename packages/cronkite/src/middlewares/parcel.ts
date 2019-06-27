@@ -29,9 +29,9 @@ export function createParcelMiddleware ({
     hmrPort: isDev ? 7778 : -1,
     https: isDev
       ? ({
-          cert: resolve(securityDirname, 'cert.pem'),
-          key: resolve(securityDirname, 'key.pem')
-        } as Bundler.HttpsOptions)
+        cert: resolve(securityDirname, 'cert.pem'),
+        key: resolve(securityDirname, 'key.pem')
+      } as Bundler.HttpsOptions)
       : false,
     ...parcelOptions
   }

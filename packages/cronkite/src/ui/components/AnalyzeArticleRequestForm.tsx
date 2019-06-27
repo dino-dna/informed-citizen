@@ -1,5 +1,5 @@
 import './AnalyzeArticleRequestForm.css'
-import React, { useState } from 'react'
+import React from 'react'
 
 const FAKE_ARTICLE_URL =
   'https://www.breitbart.com/europe/2017/01/03/dortmund-mob-attack-police-church-alight/'
@@ -12,10 +12,9 @@ export interface Props extends React.HTMLAttributes<HTMLFormElement> {
 }
 
 class AnalyzeArticleRequestForm extends React.PureComponent<Props> {
-
   inputEl: React.RefObject<HTMLInputElement>
 
-  constructor(props: any) {
+  constructor (props: any) {
     super(props)
     this.inputEl = React.createRef()
   }
@@ -28,7 +27,6 @@ class AnalyzeArticleRequestForm extends React.PureComponent<Props> {
       onChangeUrl,
       ...rest
     } = this.props
-    this.inputEl!
     return (
       <form className={`${className} AnalyzeArticleRequestForm`} {...rest}>
         <p>
