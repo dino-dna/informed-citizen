@@ -2,10 +2,22 @@
   border-radius: 4px;
   box-shadow: 0 0 4px 1px lightslategray;
   padding: 10px;
+  max-width: 450px;
 }
 
 .article_analysis_card--first-glance {
   display: flex;
   align-items: center;
   padding: 8px;
+}
+
+.article_analysis_card__table th {
+  text-align: left;
+}
+
+.article_analysis_card__analyzed_url {
+  font-size: small;
+  color: lightgray;
+  font-style: italic;
+  display: block;
 }

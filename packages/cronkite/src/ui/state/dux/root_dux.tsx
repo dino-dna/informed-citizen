@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux'
 import { combineEpics } from 'redux-observable'
 import {
-  reducer as analysis,
+  reducer as analysisResult,
   AnalysisActions,
   epics as analysisEpics
-} from './analysis'
+} from './analysis_result'
 
 export const createRootReducer = () => {
   return combineReducers({
-    analysis
+    analysisResult
   })
 }
 

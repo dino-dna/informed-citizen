@@ -1,4 +1,4 @@
-import { ArticleAnalysis } from 'common'
+import { AnalysisResult } from 'common'
 
 export const analyze = async ({
   url,
@@ -13,7 +13,7 @@ export const analyze = async ({
   }
   try {
     const json = await res.json()
-    return json as { analysis: ArticleAnalysis }
+    return json as AnalysisResult
   } catch (err) {
     console.log(err)
   }

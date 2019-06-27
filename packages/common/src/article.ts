@@ -70,3 +70,9 @@ export interface ArticleAnalysis {
     domain: string
   }
 }
+
+export interface AnalysisResult {
+  analysis: ArticleAnalysis
+  text: string
+  title: string
+}

@@ -6,13 +6,8 @@ import Koa from 'koa'
 import { Api400, Api500 } from '../errors'
 
 import fetch from 'node-fetch'
+import { AnalysisResult } from 'common'
 const DEFAULT_JSON_HEADER_VALUES = 'application/json; charset=utf-8'
-
-export type AnalysisReport = {
-  analysis: string
-  text: string
-  title: string
-}
 
 export function middleware (config: Config, logger: Logger): Koa.Middleware {
   const router = new Router()
@@ -34,7 +29,7 @@ export function middleware (config: Config, logger: Logger): Koa.Middleware {
     )
     if (existingQueryResult.rows.length) {
       const res = existingQueryResult.rows[0]
-      return (ctx.body = res.report as AnalysisReport)
+      return (ctx.body = res.report as AnalysisResult)
     }
     const report = await fetchReport({ config, reportUrl })
     await db.query(
@@ -87,7 +82,7 @@ async function fetchReport ({
     throw new Api500('failed to access analyzer')
   }
   const analysis = await analyzedResult.json()
-  const res: AnalysisReport = {
+  const res: AnalysisResult = {
     analysis,
     text,
     title

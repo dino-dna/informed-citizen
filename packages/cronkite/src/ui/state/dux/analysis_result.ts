@@ -1,4 +1,4 @@
-import { ArticleAnalysis } from 'common'
+import { ArticleAnalysis, AnalysisResult } from 'common'
 import { FSA, ErrorFSA, Store } from '../../types'
 import { Reducer } from 'redux'
 import { ofType } from 'redux-observable'
@@ -11,7 +11,7 @@ type HandleRequestAnalysisError = ErrorFSA<'HANDLE_REQUEST_ANALYSIS_ERROR'>
 type HandleRequestAnalysisSuccess = FSA<
   'HANDLE_REQUEST_ANALYSIS_SUCCESS',
   {
-    analysis: ArticleAnalysis
+    analysisResult: AnalysisResult
   }
 >
 export type AnalysisActions =
@@ -21,7 +21,7 @@ export type AnalysisActions =
 
 export type AnalysisState = {
   loading: boolean
-  value: null | ArticleAnalysis
+  value: null | AnalysisResult
   error: null | string
 }
 
@@ -45,7 +45,7 @@ export const reducer: Reducer<AnalysisState, AnalysisActions> = (
         ...state,
         error: null,
         loading: false,
-        value: action.payload.analysis
+        value: action.payload.analysisResult
       }
     default:
       return state as AnalysisState
@@ -56,7 +56,6 @@ const requestAnalysisEpic$: Store.Epic = (action$, state$) =>
   action$.pipe(
     ofType('REQUEST_ANALYSIS'),
     mergeMap(action => {
-      // action.
       const reqAction = action as RequestAnalysis
       return from(
         analyze({ fetch: window.fetch, url: reqAction.payload.url })

@@ -1,46 +1,60 @@
 import React from 'react'
-import { ArticleAnalysis, DomainCategories } from 'common'
+import { ArticleAnalysis, DomainCategories, AnalysisResult } from 'common'
 import './ArticleAnalysisCard.css'
 import ScoringThumb from './ScoringThumb'
 
 const DESIRED_DOMAIN_CATEGORIES: DomainCategories[] = ['credible', 'trusted']
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  analysis: ArticleAnalysis
+  url: string
+  analysisReport: AnalysisResult
 }
 
 const ArticleAnalysisCard: React.FC<Props> = ({
-  analysis,
+  analysisReport,
   className = '',
+  url,
   ...rest
 }) => {
   const {
     content: { decision: contentDecision, score: contentScore },
     title: { decision: titleDecision, score: titleScore },
     domain: { category }
-  } = analysis
+  } = analysisReport.analysis
   const isGoodDomain = DESIRED_DOMAIN_CATEGORIES.some(d => d === category)
   const netScore = contentScore * 0.75 + titleScore * 0.25
   const isBiased = titleDecision === 'bias' || contentDecision === 'bias'
+  const isContentUnsure = contentDecision === 'unsure'
   return (
     <div className={`${className} article_analysis_card--container`} {...rest}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <ScoringThumb score={netScore} style={{ height: 24, width: 24 }} />
+      <h4 style={{ display: 'inline-block', margin: 0, padding: '4 8' }}>
+        Analysis
+      </h4>
+      <div style={{ display: 'flex', alignItems: 'center', float: 'right' }}>
         {isBiased ? (
           <span className='article_analysis_card--first-glance --warning'>
             article is <span style={{ color: 'red', padding: 4 }}>biased</span>
           </span>
         ) : (
           <span className='article_analysis_card--first-glance'>
-            article is {contentDecision}
+            {isContentUnsure
+              ? "we're unsure about this article. safe to avoid."
+              : `article is ${contentDecision}`}
           </span>
         )}
+        <ScoringThumb score={netScore} style={{ height: 36, width: 36 }} />
       </div>
-      <h4 style={{ margin: 0 }}>Analysis</h4>
-      <table>
+      <a
+        className={'article_analysis_card__analyzed_url'}
+        href={url}
+        title={url}
+      >
+        {(url || '').substr(0, 100).trim()}
+      </a>
+      <table className='article_analysis_card__table'>
         <tbody>
           <tr>
-            <th />
+            <th>section</th>
             <th>impartialness</th>
             <th>decision</th>
           </tr>
