@@ -18,8 +18,8 @@ export function createMiddleware (logger: Logger) {
           error.message || (error.constructor as typeof ApiError).defaultMessage
         ctx.body = isApiError
           ? {
-            error: errorMessage
-          }
+              error: errorMessage
+            }
           : errorMessage
         ctx.type = isApiError ? 'json' : 'text'
       } else {

@@ -81,6 +81,13 @@
     "migrate": "run-s migrate:db:down migrate:db:up",
     "prebuild": "run-p clean",
     "prestart": "run-s link:env-files migrate",
-    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.test.ts' --exec node --inspect -r 'ts-node/register' src/bin.ts"
+    "start": "nodemon --exec node --inspect -r 'ts-node/register' src/bin.ts"
+  },
+  "nodemonConfig": {
+    "verbose": true,
+    "ignore": ["src/**/*.test.ts", "src/ui/**/*.ts", "**/*.js", "**/*.map"],
+    "watch": [
+      "src/**/*.ts"
+    ]
   }
 }

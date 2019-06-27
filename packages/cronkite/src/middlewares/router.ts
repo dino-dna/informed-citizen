@@ -83,7 +83,9 @@ async function fetchReport ({
     },
     method: 'post'
   })
-  if (analyzedResult.status >= 300) { throw new Api500('failed to access analyzer') }
+  if (analyzedResult.status >= 300) {
+    throw new Api500('failed to access analyzer')
+  }
   const analysis = await analyzedResult.json()
   const res: AnalysisReport = {
     analysis,

@@ -7,57 +7,74 @@ const FAKE_ARTICLE_URL =
 export interface Props extends React.HTMLAttributes<HTMLFormElement> {
   onAnalzye: (url: string) => any
   disabled: boolean
+  url: string
+  onChangeUrl: (url: string) => void
 }
 
-const AnalyzeArticleRequestForm: React.FC<Props> = ({
-  className = '',
-  onAnalzye,
-  disabled,
-  ...rest
-}) => {
-  const [url, setUrl] = useState('')
-  return (
-    <form className={`${className} AnalyzeArticleRequestForm`} {...rest}>
-      <p>
-        Analyze a page for fake & biased content.
+class AnalyzeArticleRequestForm extends React.PureComponent<Props> {
+
+  inputEl: React.RefObject<HTMLInputElement>
+
+  constructor(props: any) {
+    super(props)
+    this.inputEl = React.createRef()
+  }
+  render () {
+    const {
+      className = '',
+      onAnalzye,
+      disabled,
+      url,
+      onChangeUrl,
+      ...rest
+    } = this.props
+    this.inputEl!
+    return (
+      <form className={`${className} AnalyzeArticleRequestForm`} {...rest}>
+        <p>
+          Analyze a page for fake & biased content.
+          <button
+            type='button'
+            className='btn-small'
+            onClick={evt => {
+              evt.preventDefault()
+              evt.stopPropagation()
+              onChangeUrl(FAKE_ARTICLE_URL)
+              onAnalzye(FAKE_ARTICLE_URL)
+              const el = this.inputEl!.current!
+              el.selectionStart = el.selectionEnd = el.value.length
+            }}
+            style={{ marginLeft: 10 }}
+          >
+            Try it
+          </button>
+        </p>
+        <input
+          className='AnalyzeArticleRequestForm_url'
+          maxLength={1000}
+          onChange={node => onChangeUrl(node.currentTarget.value)}
+          placeholder='Enter article url'
+          type='text'
+          value={url}
+          ref={this.inputEl}
+        />
+        {/* {url && url.length > 18 && <span style={{ fontSize: 10, color: 'gray' }}>{url}</span>} */}
+        <br />
         <button
+          className='AnalyzeArticleRequestForm_submit btn-large paper-btn btn-secondary'
           type='button'
-          className='btn-small'
+          style={{ marginTop: 6 }}
           onClick={evt => {
             evt.preventDefault()
             evt.stopPropagation()
-            setUrl(FAKE_ARTICLE_URL)
-            onAnalzye(FAKE_ARTICLE_URL)
+            onAnalzye(url)
           }}
-          style={{ marginLeft: 10 }}
-        >
-          Try it
-        </button>
-      </p>
-      <input
-        className='AnalyzeArticleRequestForm_url'
-        maxLength={1000}
-        onChange={node => setUrl(node.currentTarget.value)}
-        placeholder='Enter article url'
-        type='text'
-        value={url}
-      />
-      {/* {url && url.length > 18 && <span style={{ fontSize: 10, color: 'gray' }}>{url}</span>} */}
-      <br />
-      <button
-        className='AnalyzeArticleRequestForm_submit btn-large paper-btn btn-secondary'
-        type='button'
-        style={{ marginTop: 6 }}
-        onClick={evt => {
-          evt.preventDefault()
-          evt.stopPropagation()
-          onAnalzye(url)
-        }}
-        children='Analyze'
-        disabled={disabled}
-      />
-    </form>
-  )
+          children='Analyze'
+          disabled={disabled}
+        />
+      </form>
+    )
+  }
 }
 
 export default AnalyzeArticleRequestForm

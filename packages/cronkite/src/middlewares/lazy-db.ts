@@ -1,8 +1,9 @@
 import { Logger } from '../util/logger'
 import * as Koa from 'koa'
 import { Pool } from 'pg'
-import { from } from 'rxjs'
+import { from, TimeoutError } from 'rxjs'
 import { timeout } from 'rxjs/operators'
+import { Api503 } from '../errors'
 
 export async function createMiddleware (logger: Logger) {
   const pool = new Pool({
@@ -21,15 +22,23 @@ export async function createMiddleware (logger: Logger) {
         return from(pool.connect())
           .pipe(timeout(3000))
           .toPromise()
+          .then(db => {
+            ;(ctx as any).__db = db
+            logger.info(
+              `${pool.idleCount} free connections of ${pool.totalCount}`
+            )
+            return db
+          })
+          .catch(err => {
+            if (err instanceof TimeoutError) throw new Api503()
+            throw err
+          })
       }
     })
     try {
       await next()
     } finally {
-      if (isConnecting) {
-        const db = await ctx.getDb
-        db.release()
-      }
+      ;(ctx as any).__db && (ctx as any).__db.release()
     }
   }
 }
