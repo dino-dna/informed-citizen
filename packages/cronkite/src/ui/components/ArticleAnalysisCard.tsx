@@ -16,21 +16,23 @@ const ArticleAnalysisCard: React.FC<Props> = ({
   url,
   ...rest
 }) => {
+  const { analysis, text, title } = analysisReport
   const {
     content: { decision: contentDecision, score: contentScore },
     title: { decision: titleDecision, score: titleScore },
     domain: { category }
-  } = analysisReport.analysis
+  } = analysis
   const isGoodDomain = DESIRED_DOMAIN_CATEGORIES.some(d => d === category)
   const netScore = contentScore * 0.75 + titleScore * 0.25
   const isBiased = titleDecision === 'bias' || contentDecision === 'bias'
   const isContentUnsure = contentDecision === 'unsure'
   return (
     <div className={`${className} article_analysis_card--container`} {...rest}>
-      <h4 style={{ display: 'inline-block', margin: 0, padding: '4 8' }}>
-        Analysis
-      </h4>
-      <div style={{ display: 'flex', alignItems: 'center', float: 'right' }}>
+      <h4
+        style={{ display: 'inline-block', margin: 0, padding: '4 8' }}
+        children='Analysis'
+      />
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         {isBiased ? (
           <span className='article_analysis_card--first-glance --warning'>
             article is <span style={{ color: 'red', padding: 4 }}>biased</span>
@@ -45,12 +47,18 @@ const ArticleAnalysisCard: React.FC<Props> = ({
         <ScoringThumb score={netScore} style={{ height: 36, width: 36 }} />
       </div>
       <a
-        className={'article_analysis_card__analyzed_url'}
+        children={title}
+        key={title}
+        className='article_analysis_card__analyzed_url truncate-oneliner'
+        href={url}
+      />
+      {/* <a
+        className={'article_analysis_card__analyzed_url truncate-oneliner'}
         href={url}
         title={url}
       >
         {(url || '').substr(0, 100).trim()}
-      </a>
+      </a> */}
       <table className='article_analysis_card__table'>
         <tbody>
           <tr>

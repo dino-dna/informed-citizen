@@ -16,5 +16,6 @@ export const analyze = async ({
     return json as AnalysisResult
   } catch (err) {
     console.log(err)
+    throw err // @TODO hacks, handle gracefully
   }
 }

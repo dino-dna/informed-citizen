@@ -63,7 +63,7 @@ export class App extends React.PureComponent<
                     <div
                       style={{ marginTop: 20 }}
                       className='alert alert-danger'
-                      children={props.analysis.error}
+                      children={props.analysisResult.error}
                     />
                   )}
                 </div>

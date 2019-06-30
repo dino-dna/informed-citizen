@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom'
 
 ReactDOM.render(
   <Provider store={createStore()}>
-    <ConnectedApp />
+    <ConnectedApp {...{} as any} />
   </Provider>,
   document.getElementById('root')
 )

@@ -10,9 +10,7 @@ type RequestAnalysis = FSA<'REQUEST_ANALYSIS', { url: string }>
 type HandleRequestAnalysisError = ErrorFSA<'HANDLE_REQUEST_ANALYSIS_ERROR'>
 type HandleRequestAnalysisSuccess = FSA<
   'HANDLE_REQUEST_ANALYSIS_SUCCESS',
-  {
-    analysisResult: AnalysisResult
-  }
+  AnalysisResult
 >
 export type AnalysisActions =
   | RequestAnalysis
@@ -45,7 +43,7 @@ export const reducer: Reducer<AnalysisState, AnalysisActions> = (
         ...state,
         error: null,
         loading: false,
-        value: action.payload.analysisResult
+        value: action.payload
       }
     default:
       return state as AnalysisState

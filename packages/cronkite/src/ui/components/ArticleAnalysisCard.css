@@ -2,7 +2,7 @@
   border-radius: 4px;
   box-shadow: 0 0 4px 1px lightslategray;
   padding: 10px;
-  max-width: 450px;
+  max-width: 500px;
 }
 
 .article_analysis_card--first-glance {
@@ -16,8 +16,15 @@
 }
 
 .article_analysis_card__analyzed_url {
-  font-size: small;
-  color: lightgray;
-  font-style: italic;
+  background-image: none;
   display: block;
+  padding: 6px 0;
+}
+
+.truncate-oneliner {
+  display: block;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 95%;
 }
