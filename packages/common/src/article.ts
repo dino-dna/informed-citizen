@@ -52,15 +52,16 @@ export type DomainCategories =
   | 'unknown'
   | 'unreliable'
 
+export type AnalysisDecision = 'bias' | 'impartial' | 'unsure'
 export interface ArticleAnalysis {
   content: {
-    decision: 'bias' | 'impartial' | 'unsure'
+    decision: AnalysisDecision
     entities: Entity[]
     keywords: { keyword: string }[]
     score: number
   }
   title: {
-    decision: 'bias' | 'impartial' | 'unsure'
+    decision: AnalysisDecision
     entities: Entity[]
     score: number
   }
