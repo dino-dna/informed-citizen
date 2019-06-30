@@ -9,9 +9,9 @@ require('perish')
 const projectRootDirname = path.resolve(__dirname, '..')
 const uiHtmlEntryFilename = path.resolve(
   projectRootDirname,
-  './src/ui/public/index.html'
+  './src/ui/index.html'
 )
-const staticDirname = path.resolve(__dirname, 'public')
+const staticDirname = path.resolve(projectRootDirname, 'public')
 
 dotenv.load({
   path: path.resolve(projectRootDirname, `.env.${process.env.NODE_ENV}`)

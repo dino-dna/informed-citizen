@@ -5,6 +5,7 @@ import { resolve } from 'path'
 import { WebAppUnavailableError } from '../errors'
 import { readFile } from 'fs-extra'
 import CombinedStream from 'combined-stream'
+import Koa from 'koa'
 
 export interface CreateParcelMiddlewareOptions {
   entryHtmlFilename: string
@@ -14,6 +15,12 @@ export interface CreateParcelMiddlewareOptions {
 
 const securityDirname = resolve(__dirname, '../../../../reverse-proxy/security')
 
+const toFacebookXml = ({ ctx, title }: { ctx: Koa.Context; title: string }) => `
+<meta property="og:url" content="${ctx.href}" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="AutoAnalysis for '${title}' - Informed Citizen" />
+<meta property="og:description" content="weeee" />
+`
 export function createParcelMiddleware ({
   entryHtmlFilename,
   parcelOptions,
@@ -47,22 +54,26 @@ export function createParcelMiddleware ({
     renderHtmlMiddleware: async (ctx, next) => {
       if (!builtEntrypointFilename) throw new WebAppUnavailableError()
       const outFileBuffer = await readFile(builtEntrypointFilename)
-      const [preBody, postBody] = outFileBuffer.toString().split(/<body>/)
+      const [preHead, postHead] = outFileBuffer.toString().split(/<head>/)
       const [_, reportId] = ctx.path.match(/report\/([^/]+)/) || [null, null]
-      let injectedBody = ''
+      let injectedHead = ''
       // testin...
       const db = await ctx.getDb
       const values = await db.query(`select * from analyses`)
       if (reportId) {
-        injectedBody = [
+        injectedHead = [
           '<span>',
           'report:',
           reportId,
           JSON.stringify(values.fields),
           '</span>'
         ].join('')
+      } else {
+        injectedHead = [
+          '<meta property="og:image" content="/fist.png" />'
+        ].join('')
       }
-      ctx.body = [preBody, '<body>', injectedBody, postBody].reduce(
+      ctx.body = [preHead, '<head>', injectedHead, postHead].reduce(
         (stream, chunk) => {
           stream.append(chunk)
           return stream

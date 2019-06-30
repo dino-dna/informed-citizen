@@ -1,4 +1,9 @@
-import { AnalysisResult } from 'common'
+import { DomainCategories, AnalysisResult, AnalysisDecision } from 'common'
+
+export const DESIRED_DOMAIN_CATEGORIES: DomainCategories[] = [
+  'credible',
+  'trusted'
+]
 
 export const analyze = async ({
   url,
@@ -19,3 +24,20 @@ export const analyze = async ({
     throw err // @TODO hacks, handle gracefully
   }
 }
+
+export const calculateAnalysisScore = ({
+  contentScore,
+  titleScore
+}: {
+  contentScore: number
+  titleScore: number
+}) => contentScore * 0.75 + titleScore * 0.25
+export const testIsBiased = ({
+  titleDecision,
+  contentDecision
+}: {
+  titleDecision: AnalysisDecision
+  contentDecision: AnalysisDecision
+}) => titleDecision === 'bias' || contentDecision === 'bias'
+export const testIsGoodDomain = (category: string) =>
+  DESIRED_DOMAIN_CATEGORIES.some(d => d === category)

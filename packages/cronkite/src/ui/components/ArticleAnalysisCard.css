@@ -8,16 +8,20 @@
 .article_analysis_card--first-glance {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 8px 0;
 }
 
 .article_analysis_card__table th {
   text-align: left;
 }
 
+.article_analysis_card__analyzed_url_label {
+  display: inline;
+  font-style: italic;
+  padding: 0 6px 0 0;
+}
 .article_analysis_card__analyzed_url {
   background-image: none;
-  display: block;
   padding: 6px 0;
 }
 
