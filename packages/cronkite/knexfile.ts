@@ -5,9 +5,7 @@ import { merge } from 'lodash'
 
 const isMigrating = !!process.argv.some(arg => !!arg.match(/migrate:/))
 
-// only load config on migration, otherwise, assume we are consuming
-// the config at runtime
-if (isMigrating) dotenv.config()
+dotenv.config()
 
 const {
   CRONKITE_DB_USER,

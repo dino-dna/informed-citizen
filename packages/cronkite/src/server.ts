@@ -4,18 +4,19 @@ import {
   createApi as createApiMiddlewares
 } from './middlewares'
 import { createParcelMiddleware } from './middlewares/parcel'
-import { Logger } from './util/logger'
 import { resolve, extname } from 'path'
 import compose from 'koa-compose'
 import Koa from 'koa'
 import serve from 'koa-static'
+import { Services } from './services'
 
-export async function start (config: Config, util: { logger: Logger }) {
+export async function start (config: Config, services: Services) {
+  const { logger } = services
   const app = new Koa()
   const staticMiddleware = serve(config.paths.staticDirname, { defer: false })
-  app.use(compose(await createCommonMiddlewares(config, util.logger)))
+  app.use(compose(await createCommonMiddlewares(config, services)))
   const apiMiddleware: Koa.Middleware = compose(
-    createApiMiddlewares(config, util.logger)
+    createApiMiddlewares(config, services)
   )
   const parcelMiddleware = createParcelMiddleware({
     entryHtmlFilename: config.paths.uiHtmlEntryFilename,
@@ -23,6 +24,7 @@ export async function start (config: Config, util: { logger: Logger }) {
       outDir: config.paths.staticDirname,
       outFile: resolve(config.paths.staticDirname, 'index.html')
     },
+    services,
     staticMiddleware
   })
   app.use((ctx, next) => {
@@ -36,5 +38,5 @@ export async function start (config: Config, util: { logger: Logger }) {
     )
   })
   app.listen(config.port)
-  util.logger.info(`📡 listening on ${config.port}`)
+  logger.info(`📡 listening on ${config.port}`)
 }

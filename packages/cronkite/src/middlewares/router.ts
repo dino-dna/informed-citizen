@@ -7,6 +7,7 @@ import { Api400, Api500 } from '../errors'
 
 import fetch from 'node-fetch'
 import { AnalysisResult } from 'common'
+import { toUrlkey } from '../util/analysis'
 const DEFAULT_JSON_HEADER_VALUES = 'application/json; charset=utf-8'
 
 export function middleware (config: Config, logger: Logger): Koa.Middleware {
@@ -21,8 +22,8 @@ export function middleware (config: Config, logger: Logger): Koa.Middleware {
     if (!protocol || !hostname) {
       throw new Api400('missing or invalid url query provided')
     }
+    const urlkey = toUrlkey({ hostname, pathname })
     const db = await ctx.getDb
-    const urlkey = `${hostname}_${pathname}`
     const existingQueryResult = await db.query(
       `select * from analyses where urlkey = $1 limit 1`,
       [urlkey]

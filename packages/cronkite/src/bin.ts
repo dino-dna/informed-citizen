@@ -1,8 +1,10 @@
 import { Config } from './config'
 import { create } from './util/logger'
-import { start } from './mod'
+import { start } from './server'
 import path from 'path'
 import dotenv from 'dotenv-safe'
+import knexConfig from '../knexfile'
+import knexInitializer from 'knex'
 
 require('perish')
 
@@ -30,4 +32,6 @@ const config: Config = {
   }
 }
 
-start(config, { logger: create({ level: config.logLevel }) })
+const knex = knexInitializer(knexConfig)
+
+start(config, { logger: create({ level: config.logLevel }), knex })

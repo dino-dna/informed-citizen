@@ -1,16 +1,20 @@
 import Bundler from 'parcel-bundler'
-import { isDev } from 'common'
+import { isDev, AnalysisResult } from 'common'
 import { createMiddleware, CreateMiddlewareConfig } from 'koa-parcel-middleware' // :)
 import { resolve } from 'path'
-import { WebAppUnavailableError } from '../errors'
+import { WebAppUnavailableError, WebApp404 } from '../errors'
 import { readFile } from 'fs-extra'
 import CombinedStream from 'combined-stream'
 import Koa from 'koa'
+import { Services } from '../services'
+import url from 'url'
+import { toUrlkey } from '../util/analysis'
 
 export interface CreateParcelMiddlewareOptions {
   entryHtmlFilename: string
   parcelOptions: Partial<Bundler.ParcelOptions>
   staticMiddleware: CreateMiddlewareConfig['staticMiddleware']
+  services: Services
 }
 
 const securityDirname = resolve(__dirname, '../../../../reverse-proxy/security')
@@ -18,13 +22,15 @@ const securityDirname = resolve(__dirname, '../../../../reverse-proxy/security')
 const toFacebookXml = ({ ctx, title }: { ctx: Koa.Context; title: string }) => `
 <meta property="og:url" content="${ctx.href}" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="AutoAnalysis for '${title}' - Informed Citizen" />
-<meta property="og:description" content="weeee" />
+<meta property="og:title" content="AutoAnalysis - This article is FAKE, and should not be trusted - Informed Citizen" />
+<meta property="og:description" content="AutoAnalysis reports that the associated article is FAKE.  \nTitle: ${title}" />
+<meta property="og:image" content="/fist.png" />
 `
 export function createParcelMiddleware ({
   entryHtmlFilename,
   parcelOptions,
-  staticMiddleware
+  staticMiddleware,
+  services
 }: CreateParcelMiddlewareOptions) {
   const options: Bundler.ParcelOptions = {
     detailedReport: isDev,
@@ -53,21 +59,20 @@ export function createParcelMiddleware ({
     staticMiddleware,
     renderHtmlMiddleware: async (ctx, next) => {
       if (!builtEntrypointFilename) throw new WebAppUnavailableError()
+      const reportUrl = (ctx.query.url || '').trim()
+      const parsed = url.parse(reportUrl)
+      const { hostname = '', pathname = '' } = parsed
+      const urlkey = toUrlkey({ hostname, pathname })
       const outFileBuffer = await readFile(builtEntrypointFilename)
       const [preHead, postHead] = outFileBuffer.toString().split(/<head>/)
-      const [_, reportId] = ctx.path.match(/report\/([^/]+)/) || [null, null]
       let injectedHead = ''
-      // testin...
-      const db = await ctx.getDb
-      const values = await db.query(`select * from analyses`)
-      if (reportId) {
-        injectedHead = [
-          '<span>',
-          'report:',
-          reportId,
-          JSON.stringify(values.fields),
-          '</span>'
-        ].join('')
+      if (reportUrl) {
+        const [analysis] = await services.knex
+          .columns('id', 'report')
+          .from<{ id: number; report: AnalysisResult }>('analyses')
+          .where('urlkey', urlkey)
+        if (!analysis) throw new WebApp404('no report source article url found')
+        injectedHead = toFacebookXml({ ctx, title: analysis.report.title })
       } else {
         injectedHead = [
           '<meta property="og:image" content="/fist.png" />'

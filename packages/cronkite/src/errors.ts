@@ -1,9 +1,24 @@
 export class CronkiteError extends Error {
   static status: number
   static defaultMessage: string
+  // @ref https://stackoverflow.com/a/48342359/1438908
+  constructor (message?: string) {
+    // 'Error' breaks prototype chain here
+    super(message)
+    // restore prototype chain
+    const actualProto = new.target.prototype
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(this, actualProto)
+    } else {
+      ;(this as any).__proto__ = actualProto // eslint-disable-line
+    }
+  }
 }
 export class WebAppError extends CronkiteError {}
-export class WebAppUnavailableError extends CronkiteError {}
+export class WebApp404 extends WebAppError {}
+WebApp404.status = 404
+
+export class WebAppUnavailableError extends WebAppError {}
 WebAppUnavailableError.status = 503
 WebAppUnavailableError.defaultMessage = 'Service unavailable'
 
