@@ -2,9 +2,13 @@ import { isDev } from 'common'
 import knex from 'knex'
 import dotenv from 'dotenv-safe'
 import { merge } from 'lodash'
-dotenv.config()
 
 const isMigrating = !!process.argv.some(arg => !!arg.match(/migrate:/))
+
+// only load config on migration, otherwise, assume we are consuming
+// the config at runtime
+if (isMigrating) dotenv.config()
+
 const {
   CRONKITE_DB_USER,
   CRONKITE_DB_PASSWORD,
