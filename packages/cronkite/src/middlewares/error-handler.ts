@@ -21,7 +21,8 @@ export function createMiddleware (logger: Logger) {
             error: errorMessage
           }
           : errorMessage
-        ctx.type = isApiError ? 'json' : 'text'
+        if (isApiError) ctx.type = 'json'
+        if (isWebAppError) ctx.type = 'text'
       } else {
         ctx.body = { error: 'Fatal error' }
         ctx.status = err.status || 500
