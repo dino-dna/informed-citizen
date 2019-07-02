@@ -1,5 +1,13 @@
 # contributing
 
+## architecture
+
+the core value proposition of informed-citizen is encapsulated the analysis workflow:
+
+![](../img/sequence-diagram/analyze.png)
+
+`cronkite` in actuality serves as ui application provider and the core api application consumed by the ui.  other services can be referenced in the docker-compose file in the root of the project.
+
 ## getting started
 
 ### pre-reqs

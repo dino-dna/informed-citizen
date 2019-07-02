@@ -18,4 +18,4 @@ regulation is not about suppression. it is about protection & safety, of which o
 
 ## contributing
 
-to learn how develop and contribute, see [contributing.md](./.github/contributing.md)
+to learn how it works, or to learn how to develop and contribute, see [contributing.md](./.github/contributing.md)
