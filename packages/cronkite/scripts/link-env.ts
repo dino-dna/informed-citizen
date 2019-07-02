@@ -1,12 +1,6 @@
 import { link } from 'fs'
 import path from 'path'
-const SRC_ENV_FILENAME = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'informed.env'
-)
+const SRC_ENV_FILENAME = path.resolve(__dirname, '..', '..', '..', 'informed.env')
 const TARGET_ENV_FILENAME = path.resolve(__dirname, '..', '.env')
 
 link(SRC_ENV_FILENAME, TARGET_ENV_FILENAME, err => {

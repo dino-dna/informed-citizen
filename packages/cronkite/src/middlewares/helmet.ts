@@ -10,13 +10,7 @@ export function createMiddleware () {
           : ["'self'", 'data:', '*.amazonaws.com', '*.unpkg.com', 'unpkg.com'],
         fontSrc: ["'self'", 'data:', '*.googleapis.com', '*.gstatic.com'],
         scriptSrc: isDev ? ['*'] : ["'self'", "'unsafe-inline'"],
-        styleSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          '*.googleapis.com',
-          'unpkg.com',
-          '*.gstatic.com'
-        ]
+        styleSrc: ["'self'", "'unsafe-inline'", '*.googleapis.com', 'unpkg.com', '*.gstatic.com']
       }
     },
     referrerPolicy: { policy: 'no-referrer' }

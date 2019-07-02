@@ -1,10 +1,5 @@
 import { createRootEpic, createRootReducer } from './dux/root_dux'
-import {
-  applyMiddleware,
-  compose,
-  createStore as createReduxStore,
-  Middleware
-} from 'redux'
+import { applyMiddleware, compose, createStore as createReduxStore, Middleware } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { createLogger } from 'redux-logger'
 import { isDev } from 'common'
@@ -22,9 +17,7 @@ export const createStore = () => {
     {},
     compose(
       applyMiddleware(...middlewares),
-      win.__REDUX_DEVTOOLS_EXTENSION__
-        ? win.__REDUX_DEVTOOLS_EXTENSION__()
-        : (noop: any) => noop
+      win.__REDUX_DEVTOOLS_EXTENSION__ ? win.__REDUX_DEVTOOLS_EXTENSION__() : (noop: any) => noop
     )
   )
   epicMiddleware.run(createRootEpic() as any)

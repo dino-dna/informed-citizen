@@ -5,10 +5,21 @@
   max-width: 500px;
 }
 
+.article_analysis_card__header {
+  display: inline-block;
+  margin: 0;
+}
+
+.article_analysis_card__claim {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .article_analysis_card--first-glance {
   display: flex;
   align-items: center;
-  padding: 8px 0;
+  padding: 8px;
 }
 
 .article_analysis_card__table th {

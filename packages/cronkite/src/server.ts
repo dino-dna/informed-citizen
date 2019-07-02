@@ -15,9 +15,7 @@ export async function start (config: Config, services: Services) {
   const app = new Koa()
   const staticMiddleware = serve(config.paths.staticDirname, { defer: false })
   app.use(compose(await createCommonMiddlewares(config, services)))
-  const apiMiddleware: Koa.Middleware = compose(
-    createApiMiddlewares(config, services)
-  )
+  const apiMiddleware: Koa.Middleware = compose(createApiMiddlewares(config, services))
   const parcelMiddleware = createParcelMiddleware({
     entryHtmlFilename: config.paths.uiHtmlEntryFilename,
     parcelOptions: {

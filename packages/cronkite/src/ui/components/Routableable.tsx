@@ -13,9 +13,8 @@ const withoutRouterProps = (props: any) => {
   return nextProps
 }
 
-const Routable: React.ComponentType<Props> = ({
-  render: Component,
-  ...rest
-}) => <Component {...withoutRouterProps(rest)} />
+const Routable: React.ComponentType<Props> = ({ render: Component, ...rest }) => (
+  <Component {...withoutRouterProps(rest)} />
+)
 
 export default Routable

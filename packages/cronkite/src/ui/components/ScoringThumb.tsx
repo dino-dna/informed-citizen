@@ -1,24 +1,29 @@
 import React from 'react'
 import Thumb from './icons/Thumb'
+import { AnalysisRatingCategory } from 'common'
+import { mapNetScoreToCategory } from '../util/analysis'
 
 const ScoringThumb: React.FC<
   React.HTMLAttributes<any> & {
     score: number
   }
 > = ({ style = {}, score, ...rest }) => {
+  const category = mapNetScoreToCategory(score)
   // eslint-disable-start
   const { color, degrees } =
-    score >= 0.85
+    category === AnalysisRatingCategory.GOOD
       ? { color: 'green', degrees: 0 }
-      : score >= 0.75
+      : category === AnalysisRatingCategory.OK
         ? { color: 'lightgreen', degrees: 45 }
-        : score >= 0.65
+        : category === AnalysisRatingCategory.NEUTRAL
           ? { color: 'orange', degrees: 90 }
           : { color: 'red', degrees: 180 }
   // eslint-disable-end
   return (
     <Thumb
       style={{
+        minHeight: 30,
+        minWidth: 30,
         maxWidth: 100,
         stroke: color,
         fill: color,

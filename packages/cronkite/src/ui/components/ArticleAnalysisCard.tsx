@@ -2,67 +2,41 @@ import React from 'react'
 import { AnalysisResult } from 'common'
 import './ArticleAnalysisCard.css'
 import ScoringThumb from './ScoringThumb'
-import {
-  testIsGoodDomain,
-  calculateAnalysisScore,
-  testIsBiased,
-  DESIRED_DOMAIN_CATEGORIES
-} from '../util/analyze'
+import { DESIRED_DOMAIN_CATEGORIES, getMetrics, getGeneralAnalysisClaim } from '../util/analysis'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   url: string
   analysisReport: AnalysisResult
 }
 
-const ArticleAnalysisCard: React.FC<Props> = ({
-  analysisReport,
-  className = '',
-  url,
-  ...rest
-}) => {
+const ArticleAnalysisCard: React.FC<Props> = ({ analysisReport, className = '', url, ...rest }) => {
   const { analysis, title } = analysisReport
   const {
     content: { decision: contentDecision, score: contentScore },
     title: { decision: titleDecision, score: titleScore },
     domain: { category }
   } = analysis
-  const isGoodDomain = testIsGoodDomain(category)
-  const netScore = calculateAnalysisScore({ contentScore, titleScore })
-  const isBiased = testIsBiased({ contentDecision, titleDecision })
-  const isContentUnsure = contentDecision === 'unsure'
+  const { isGoodDomain, netScore, isBiased, isContentUnsure } = getMetrics(analysis)
   return (
     <div className={`${className} article_analysis_card--container`} {...rest}>
-      <h4
-        style={{ display: 'inline-block', margin: 0, padding: '4 8' }}
-        children='Analysis'
-      />
+      <h4 className='article_analysis_card__header' children='Analysis' />
       <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        {/* <span className='article_analysis_card__analyzed_url_label' children='result:' /> */}
-        {isBiased ? (
-          <span className='article_analysis_card--first-glance --warning'>
-            article is <span style={{ color: 'red', padding: 4 }}>biased</span>
-          </span>
-        ) : (
-          <span className='article_analysis_card--first-glance'>
-            {isContentUnsure
-              ? "we're unsure about this article. safe to avoid."
-              : `article is ${contentDecision}`}
-          </span>
-        )}
-        <ScoringThumb score={netScore} style={{ height: 36, width: 36 }} />
-      </div>
+        className='article_analysis_card__claim'
+        children={
+          <React.Fragment>
+            <ScoringThumb score={netScore} style={{ height: 36, width: 36 }} />
+            {getGeneralAnalysisClaim({
+              contentDecision,
+              isBiased,
+              isContentUnsure,
+              asReact: true
+            })}
+          </React.Fragment>
+        }
+      />
       <br />
       <span className='truncate-oneliner'>
-        <span
-          className='article_analysis_card__analyzed_url_label'
-          children='title:'
-        />
+        <span className='article_analysis_card__analyzed_url_label' children='title:' />
         <a
           children={title}
           key={title}
@@ -70,14 +44,6 @@ const ArticleAnalysisCard: React.FC<Props> = ({
           href={url}
         />
       </span>
-      {/* <a
-        className={'article_analysis_card__analyzed_url truncate-oneliner'}
-        href={url}
-        title={url}
-      >
-        {(url || '').substr(0, 100).trim()}
-      </a> */}
-      {/* <hr /> */}
       <br />
       <table className='article_analysis_card__table'>
         <tbody>
@@ -103,21 +69,26 @@ const ArticleAnalysisCard: React.FC<Props> = ({
         </tbody>
       </table>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <ScoringThumb
-          score={isGoodDomain ? 1 : 0}
-          style={{ height: 18, width: 18 }}
-        />
+        <ScoringThumb score={isGoodDomain ? 1 : 0} style={{ height: 18, width: 18, margin: 8 }} />
         {isGoodDomain ? (
           <span style={{ padding: 4 }}>the article domain is {category}</span>
         ) : (
           <span style={{ color: 'red', padding: 4 }}>
-            the article domain is not one of "
-            {DESIRED_DOMAIN_CATEGORIES.join(', ')}". it is {category}.
+            the article domain is not one of {toListVerbiage(DESIRED_DOMAIN_CATEGORIES)}. it is{' '}
+            {category}.
           </span>
         )}
       </div>
     </div>
   )
+}
+
+function toListVerbiage (list: typeof DESIRED_DOMAIN_CATEGORIES) {
+  if (list.length <= 1) return list[0] || ''
+  if (list.length === 2) return `${list[0]} or ${list[1]}`
+  const first = [...list]
+  const last = first.pop()
+  return `${first.join(', ')}, or ${last}`
 }
 
 export default ArticleAnalysisCard

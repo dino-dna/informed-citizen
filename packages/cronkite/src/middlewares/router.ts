@@ -24,10 +24,9 @@ export function middleware (config: Config, logger: Logger): Koa.Middleware {
     }
     const urlkey = toUrlkey({ hostname, pathname })
     const db = await ctx.getDb
-    const existingQueryResult = await db.query(
-      `select * from analyses where urlkey = $1 limit 1`,
-      [urlkey]
-    )
+    const existingQueryResult = await db.query(`select * from analyses where urlkey = $1 limit 1`, [
+      urlkey
+    ])
     if (existingQueryResult.rows.length) {
       const res = existingQueryResult.rows[0]
       return (ctx.body = res.report as AnalysisResult)
@@ -48,28 +47,16 @@ export function middleware (config: Config, logger: Logger): Koa.Middleware {
   return router.routes() as any
 }
 
-async function fetchReport ({
-  config,
-  reportUrl
-}: {
-  config: Config
-  reportUrl: string
-}) {
-  const scrapeResult = await fetch(
-    `${config.scraperApiEndpoint}/?url=${reportUrl}`,
-    {
-      headers: {
-        accept: DEFAULT_JSON_HEADER_VALUES
-      }
+async function fetchReport ({ config, reportUrl }: { config: Config; reportUrl: string }) {
+  const scrapeResult = await fetch(`${config.scraperApiEndpoint}/?url=${reportUrl}`, {
+    headers: {
+      accept: DEFAULT_JSON_HEADER_VALUES
     }
-  )
+  })
   if (scrapeResult.status >= 300) {
     throw new Api500('failed to access scrape service')
   }
-  const {
-    text,
-    title
-  }: { text: string; title: string } = await scrapeResult.json()
+  const { text, title }: { text: string; title: string } = await scrapeResult.json()
   const analyzedResult = await fetch(config.analyzerApiEndpoint, {
     timeout: 120000,
     body: JSON.stringify({ content: text, title, url: reportUrl }),

@@ -9,10 +9,7 @@ import { connect } from 'react-redux'
 import ArticleAnalysisCard from './components/ArticleAnalysisCard'
 import { Ripple } from 'react-css-spinners'
 
-export class App extends React.PureComponent<
-  Store.All & Store.WithDispatch,
-  { url: string }
-> {
+export class App extends React.PureComponent<Store.All & Store.WithDispatch, { url: string }> {
   constructor (props: any) {
     super(props)
     this.state = { url: '' }

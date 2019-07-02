@@ -39,7 +39,5 @@ export async function createCommon (config: Config, services: Services) {
 }
 
 export function createApi (config: Config, services: Services) {
-  return [
-    { fn: routerMiddleware(config, services.logger), name: 'router' }
-  ].map(toDebugMiddleware)
+  return [{ fn: routerMiddleware(config, services.logger), name: 'router' }].map(toDebugMiddleware)
 }

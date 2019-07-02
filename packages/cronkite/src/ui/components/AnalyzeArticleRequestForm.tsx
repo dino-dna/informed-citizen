@@ -19,14 +19,7 @@ class AnalyzeArticleRequestForm extends React.PureComponent<Props> {
     this.inputEl = React.createRef()
   }
   render () {
-    const {
-      className = '',
-      onAnalzye,
-      disabled,
-      url,
-      onChangeUrl,
-      ...rest
-    } = this.props
+    const { className = '', onAnalzye, disabled, url, onChangeUrl, ...rest } = this.props
     return (
       <form className={`${className} AnalyzeArticleRequestForm`} {...rest}>
         <p>

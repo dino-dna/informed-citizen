@@ -12,10 +12,8 @@ export function createMiddleware (logger: Logger) {
       const isApiError = isCronkiteError && err instanceof ApiError
       if (isCronkiteError) {
         let error = err as ApiError
-        ctx.status =
-          (error as any).status || (error.constructor as typeof ApiError).status
-        const errorMessage =
-          error.message || (error.constructor as typeof ApiError).defaultMessage
+        ctx.status = (error as any).status || (error.constructor as typeof ApiError).status
+        const errorMessage = error.message || (error.constructor as typeof ApiError).defaultMessage
         ctx.body = isApiError
           ? {
             error: errorMessage

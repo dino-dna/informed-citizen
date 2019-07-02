@@ -1,17 +1,14 @@
-import { ArticleAnalysis, AnalysisResult } from 'common'
+import { AnalysisResult } from 'common'
 import { FSA, ErrorFSA, Store } from '../../types'
 import { Reducer } from 'redux'
 import { ofType } from 'redux-observable'
 import { mergeMap } from 'rxjs/operators'
 import { from } from 'rxjs'
-import { analyze } from '../../util/analyze'
+import { analyze } from '../../util/analysis'
 
 type RequestAnalysis = FSA<'REQUEST_ANALYSIS', { url: string }>
 type HandleRequestAnalysisError = ErrorFSA<'HANDLE_REQUEST_ANALYSIS_ERROR'>
-type HandleRequestAnalysisSuccess = FSA<
-  'HANDLE_REQUEST_ANALYSIS_SUCCESS',
-  AnalysisResult
->
+type HandleRequestAnalysisSuccess = FSA<'HANDLE_REQUEST_ANALYSIS_SUCCESS', AnalysisResult>
 export type AnalysisActions =
   | RequestAnalysis
   | HandleRequestAnalysisError
@@ -68,9 +65,7 @@ const requestAnalysisEpic$: Store.Epic = (action$, state$) =>
             () =>
               ({
                 type: 'HANDLE_REQUEST_ANALYSIS_ERROR',
-                payload: new Error(
-                  `bummer. failed to analyze ${reqAction.payload.url}`
-                ),
+                payload: new Error(`bummer. failed to analyze ${reqAction.payload.url}`),
                 error: true
               } as HandleRequestAnalysisError)
           )

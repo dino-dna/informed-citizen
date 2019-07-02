@@ -10,8 +10,7 @@ export interface FSA<Type, Payload, Meta = undefined> extends Action<Type> {
   error?: true
 }
 
-export interface ErrorFSA<Type, Meta = undefined>
-  extends FSA<Type, Error, Meta> {
+export interface ErrorFSA<Type, Meta = undefined> extends FSA<Type, Error, Meta> {
   error: true
 }
 
@@ -21,9 +20,7 @@ export namespace Store {
     dispatch: (action: AllActions) => void
   }
 
-  export type StateType<ReducerOrMap> = ReducerOrMap extends (
-    ...args: any[]
-  ) => any
+  export type StateType<ReducerOrMap> = ReducerOrMap extends (...args: any[]) => any
     ? ReturnType<ReducerOrMap>
     : ReducerOrMap extends object
     ? { [K in keyof ReducerOrMap]: StateType<ReducerOrMap[K]> }

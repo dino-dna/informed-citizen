@@ -24,9 +24,7 @@ export async function createMiddleware (logger: Logger) {
           .toPromise()
           .then(db => {
             ;(ctx as any).__db = db
-            logger.info(
-              `${pool.idleCount} free connections of ${pool.totalCount}`
-            )
+            logger.info(`${pool.idleCount} free connections of ${pool.totalCount}`)
             return db
           })
           .catch(err => {

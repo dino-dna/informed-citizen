@@ -1,14 +1,20 @@
-import Bundler from 'parcel-bundler'
-import { isDev, AnalysisResult } from 'common'
 import { createMiddleware, CreateMiddlewareConfig } from 'koa-parcel-middleware' // :)
-import { resolve } from 'path'
-import { WebAppUnavailableError, WebApp404 } from '../errors'
+import { getMetrics, getGeneralAnalysisClaim, getShortAnalysisClaim } from '../ui/util/analysis'
+import { isDev, AnalysisResult, AnalysisRatingCategory } from 'common'
 import { readFile } from 'fs-extra'
+import { resolve } from 'path'
+import { Services } from '../services'
+import { toUrlkey } from '../util/analysis'
+import { WebAppUnavailableError, WebApp404 } from '../errors'
+import Bundler from 'parcel-bundler'
 import CombinedStream from 'combined-stream'
 import Koa from 'koa'
-import { Services } from '../services'
 import url from 'url'
-import { toUrlkey } from '../util/analysis'
+
+const capitalize = (s: string) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 export interface CreateParcelMiddlewareOptions {
   entryHtmlFilename: string
@@ -19,12 +25,31 @@ export interface CreateParcelMiddlewareOptions {
 
 const securityDirname = resolve(__dirname, '../../../../reverse-proxy/security')
 
-const toFacebookXml = ({ ctx, title }: { ctx: Koa.Context; title: string }) => `
+const toFacebookXml = ({
+  claim,
+  ctx,
+  shortClaim,
+  scoreCategory,
+  title
+}: {
+  claim: string
+  ctx: Koa.Context
+  shortClaim: string
+  scoreCategory?: AnalysisRatingCategory
+  title: string
+}) => `
 <meta property="og:url" content="${ctx.href}" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="AutoAnalysis - This article is FAKE, and should not be trusted - Informed Citizen" />
-<meta property="og:description" content="AutoAnalysis reports that the associated article is FAKE.  \nTitle: ${title}" />
-<meta property="og:image" content="/fist.png" />
+<meta property="og:title" content="${capitalize(shortClaim)} - Informed Citizen - AutoAnalysis" />
+<meta property="og:description" content="${capitalize(claim)}. analysis for article '${title}'" />
+<meta property="fb:app_id" content="${process.env.FACEBOOK_APP_ID}" />
+${
+  scoreCategory
+    ? `<meta property="og:image" content="${
+      process.env.ORIGIN
+    }/thumb_${scoreCategory.toLowerCase()}.png" />`
+    : `<meta property="og:image" content="${process.env.ORIGIN}/fist.png" />`
+}
 `
 export function createParcelMiddleware ({
   entryHtmlFilename,
@@ -72,19 +97,24 @@ export function createParcelMiddleware ({
           .from<{ id: number; report: AnalysisResult }>('analyses')
           .where('urlkey', urlkey)
         if (!analysis) throw new WebApp404('no report source article url found')
-        injectedHead = toFacebookXml({ ctx, title: analysis.report.title })
+        const metrics = getMetrics(analysis.report.analysis)
+        injectedHead = toFacebookXml({
+          claim: getGeneralAnalysisClaim({
+            ...metrics,
+            contentDecision: analysis.report.analysis.content.decision
+          }) as string,
+          ctx,
+          scoreCategory: metrics.scoreCategory,
+          shortClaim: getShortAnalysisClaim({ ...metrics }),
+          title: analysis.report.title
+        })
       } else {
-        injectedHead = [
-          '<meta property="og:image" content="/fist.png" />'
-        ].join('')
+        injectedHead = ['<meta property="og:image" content="/fist.png" />'].join('')
       }
-      ctx.body = [preHead, '<head>', injectedHead, postHead].reduce(
-        (stream, chunk) => {
-          stream.append(chunk)
-          return stream
-        },
-        new CombinedStream()
-      )
+      ctx.body = [preHead, '<head>', injectedHead, postHead].reduce((stream, chunk) => {
+        stream.append(chunk)
+        return stream
+      }, new CombinedStream())
       ctx.type = 'html'
       await next()
     }
