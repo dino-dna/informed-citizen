@@ -6,7 +6,7 @@ the core value proposition of informed-citizen is encapsulated the analysis work
 
 ![](../img/sequence-diagram/analyze.png)
 
-`cronkite` in actuality serves as ui application provider and the core api application consumed by the ui.  other services can be referenced in the docker-compose file in the root of the project.
+`cronkite` is the core API and serves the ui application assets.  other services can be referenced in the docker-compose file in the root of the project.
 
 ## getting started
 
@@ -21,8 +21,8 @@ install:
 this project houses multiple artifacts.  at the time of writing:
 
 1. a webservice, `cronkite`
-1. a common library, sharing functionality between the ui & webserver
-1. _tbd_ ~a ui application~
+2. a common library, sharing functionality between the ui & webserver
+3. _tbd_ ~a ui application~
 
 see the `packages/` folder for individual project sources.
 
