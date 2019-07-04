@@ -2,7 +2,7 @@ import { createRootEpic, createRootReducer } from './dux/root_dux'
 import { applyMiddleware, compose, createStore as createReduxStore, Middleware } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { createLogger } from 'redux-logger'
-import { isDev } from 'common'
+import { isDev } from '../../common'
 
 const win = window as any
 

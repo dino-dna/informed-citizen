@@ -1,23 +1,14 @@
 version: "3.7"
 services:
   scraper:
-    image: smarp/newspaper-api
     ports:
       - 38765:38765
   analyzer:
-    image: machinebox/fakebox
-    env_file:
-      - informed.env
     ports:
       - 8080:8080
   informeddb:
-    image: postgres:alpine
-    env_file:
-      - informed.env
     ports:
       - 5432:5432
-    command: -c "log_statement=all" -c "log_min_error_statement=error"
-
   reverse_proxy:
     image: nginx:alpine
     ports:
@@ -29,8 +20,4 @@ services:
       - type: bind
         source: ./reverse-proxy/security
         target: /security
-
-    # volumes:
-    #   - type: bind
-    #     source: ./scripts/informeddb
-    #     target: /docker-entrypoint-initdb.d
+    restart: unless-stopped

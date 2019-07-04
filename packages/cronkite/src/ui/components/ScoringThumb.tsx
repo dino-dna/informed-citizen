@@ -1,6 +1,6 @@
 import React from 'react'
 import Thumb from './icons/Thumb'
-import { AnalysisRatingCategory } from 'common'
+import { AnalysisRatingCategory } from '../../common'
 import { mapNetScoreToCategory } from '../util/analysis'
 
 const ScoringThumb: React.FC<

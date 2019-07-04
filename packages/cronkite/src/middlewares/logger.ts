@@ -1,5 +1,5 @@
 import { Middleware } from 'koa'
-import { isDev } from 'common'
+import { isDev } from '../common'
 import { Logger } from '../util/logger'
 
 export const middleware: (logger: Logger) => Middleware = function (logger) {

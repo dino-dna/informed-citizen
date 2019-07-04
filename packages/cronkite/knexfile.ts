@@ -1,4 +1,4 @@
-import { isDev } from 'common'
+import { isDev } from './src/common'
 import knex from 'knex'
 import dotenv from 'dotenv-safe'
 import { merge } from 'lodash'

@@ -1,6 +1,6 @@
 import { Logger } from './util/logger'
 import Knex from 'knex'
-import { AnalysisResult } from 'common'
+import { AnalysisResult } from './common'
 
 export type Services = {
   logger: Logger

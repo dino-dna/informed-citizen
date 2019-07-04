@@ -1,6 +1,6 @@
 import { createMiddleware, CreateMiddlewareConfig } from 'koa-parcel-middleware' // :)
 import { getMetrics, getGeneralAnalysisClaim, getShortAnalysisClaim } from '../ui/util/analysis'
-import { isDev, AnalysisResult, AnalysisRatingCategory } from 'common'
+import { isDev, AnalysisResult, AnalysisRatingCategory } from '../common'
 import { readFile } from 'fs-extra'
 import { resolve } from 'path'
 import { Services } from '../services'

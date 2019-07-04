@@ -4,7 +4,7 @@ import {
   AnalysisDecision,
   AnalysisRatingCategory,
   ArticleAnalysis
-} from 'common'
+} from '../../common'
 import * as React from 'react'
 
 export const DESIRED_DOMAIN_CATEGORIES: DomainCategories[] = ['credible', 'trusted']

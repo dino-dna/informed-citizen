@@ -1,4 +1,4 @@
-import { AnalysisResult } from 'common'
+import { AnalysisResult } from '../../../common'
 import { FSA, ErrorFSA, Store } from '../../types'
 import { Reducer } from 'redux'
 import { ofType } from 'redux-observable'

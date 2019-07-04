@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  scraper:
+    image: smarp/newspaper-api
+    restart: unless-stopped
+  analyzer:
+    image: machinebox/fakebox
+    env_file:
+      - informed.env
+    restart: unless-stopped
+  informeddb:
+    image: postgres:alpine
+    env_file:
+      - informed.env
+    command: -c "log_statement=all" -c "log_min_error_statement=error"
+    restart: unless-stopped

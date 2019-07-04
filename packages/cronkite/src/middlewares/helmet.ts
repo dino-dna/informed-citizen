@@ -1,5 +1,5 @@
 import helmet from 'koa-helmet'
-import { isDev } from 'common'
+import { isDev } from '../common'
 
 export function createMiddleware () {
   const options = {

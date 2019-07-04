@@ -1,5 +1,5 @@
 import React from 'react'
-import { AnalysisResult } from 'common'
+import { AnalysisResult } from '../../common'
 import './ArticleAnalysisCard.css'
 import ScoringThumb from './ScoringThumb'
 import { DESIRED_DOMAIN_CATEGORIES, getMetrics, getGeneralAnalysisClaim } from '../util/analysis'
