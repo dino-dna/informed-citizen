@@ -5,6 +5,7 @@ import React from 'react'
 import Routable from './components/Routableable'
 import { connect } from 'react-redux'
 import Home, { HomeProps } from './Home'
+import { Patreon } from './patreon'
 
 export class App extends React.PureComponent<HomeProps> {
   render () {
@@ -16,8 +17,13 @@ export class App extends React.PureComponent<HomeProps> {
           <Routable
             path='about'
             render={() => (
-              <div className='layout--body' style={{ margin: '80px auto 0' }}>
-                cool beans
+              <div className='layout--body'>
+                <h2>About</h2>
+                <p>
+                  Informed Citizen is an open source project, run by the community. See our{' '}
+                  <Patreon label='Patreon' /> and{' '}
+                  <a href='https://github.com/dino-dna/informed-citizen'>GitHub</a> for more.
+                </p>
               </div>
             )}
           />

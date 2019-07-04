@@ -3,6 +3,7 @@ import AnalyzeArticleRequestForm from './components/AnalyzeArticleRequestForm'
 import ArticleAnalysisCard from './components/ArticleAnalysisCard'
 import { Ripple } from 'react-css-spinners'
 import { Store } from './types'
+import { Patreon } from './patreon'
 
 export type HomeProps = Store.All & Store.WithDispatch
 
@@ -47,7 +48,7 @@ class Home extends React.PureComponent<HomeProps, { url: string }> {
           onChangeUrl={onChangeUrl}
           url={url}
         />
-        <div style={{ margin: '20px auto 100px', display: 'flex', justifyContent: 'center' }}>
+        <div className='analysis-container'>
           {!!props.analysisResult.loading && <Ripple />}
           {!!props.analysisResult.value && (
             <ArticleAnalysisCard
@@ -63,6 +64,8 @@ class Home extends React.PureComponent<HomeProps, { url: string }> {
               children={props.analysisResult.error}
             />
           )}
+          <br />
+          <Patreon />
         </div>
       </div>
     )
