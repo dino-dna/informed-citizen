@@ -23,6 +23,11 @@ export class App extends React.PureComponent<HomeProps> {
                   Informed Citizen is an open source project, run by the community. See our{' '}
                   <Patreon label='Patreon' /> and{' '}
                   <a href='https://github.com/dino-dna/informed-citizen'>GitHub</a> for more.
+                  Developing and running Informed Citizen costs time and money. Any amount of money
+                  you donate goes directly to funding this project, and this project alone.
+                  <br />
+                  <br />
+                  <b>Thank you!</b>
                 </p>
               </div>
             )}
