@@ -1,20 +1,13 @@
 import React from 'react'
 import { RouteComponentProps } from '@reach/router'
 
-const ROUTER_PROP_KEYS = ['path', 'default', 'location', 'navigate', 'uri']
+type Props<T> = { render: React.ComponentType; props?: T } & RouteComponentProps
 
-type Props = { render: React.ComponentType } & RouteComponentProps
-
-const withoutRouterProps = (props: any) => {
-  const nextProps = { ...props }
-  for (var key of ROUTER_PROP_KEYS) {
-    delete nextProps[key]
+class Routable<T> extends React.PureComponent<Props<T>> {
+  render () {
+    const { render: Component, props = {}, ...rest } = this.props
+    return <Component {...props} {...rest} />
   }
-  return nextProps
 }
-
-const Routable: React.ComponentType<Props> = ({ render: Component, ...rest }) => (
-  <Component {...withoutRouterProps(rest)} />
-)
 
 export default Routable

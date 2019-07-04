@@ -4,12 +4,13 @@ import './ArticleAnalysisCard.css'
 import ScoringThumb from './ScoringThumb'
 import { DESIRED_DOMAIN_CATEGORIES, getMetrics, getGeneralAnalysisClaim } from '../util/analysis'
 
-interface Props extends React.HTMLAttributes<HTMLDivElement> {
+interface Props extends React.HTMLProps<HTMLDivElement> {
   url: string
   analysisReport: AnalysisResult
 }
 
-const ArticleAnalysisCard: React.FC<Props> = ({ analysisReport, className = '', url, ...rest }) => {
+const ArticleAnalysisCard = React.forwardRef<HTMLDivElement, Props>((props, ref) => {
+  const { analysisReport, className = '', url, ...rest } = props
   const { analysis, title } = analysisReport
   const {
     content: { decision: contentDecision, score: contentScore },
@@ -18,7 +19,7 @@ const ArticleAnalysisCard: React.FC<Props> = ({ analysisReport, className = '', 
   } = analysis
   const { isGoodDomain, netScore, isBiased, isContentUnsure } = getMetrics(analysis)
   return (
-    <div className={`${className} article_analysis_card--container`} {...rest}>
+    <div ref={ref} className={`${className} article_analysis_card--container`} {...rest}>
       <h4 className='article_analysis_card__header' children='Analysis' />
       <div
         className='article_analysis_card__claim'
@@ -81,7 +82,7 @@ const ArticleAnalysisCard: React.FC<Props> = ({ analysisReport, className = '', 
       </div>
     </div>
   )
-}
+})
 
 function toListVerbiage (list: typeof DESIRED_DOMAIN_CATEGORIES) {
   if (list.length <= 1) return list[0] || ''
