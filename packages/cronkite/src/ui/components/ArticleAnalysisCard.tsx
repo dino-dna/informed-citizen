@@ -43,6 +43,7 @@ const ArticleAnalysisCard = React.forwardRef<HTMLDivElement, Props>((props, ref)
           key={title}
           className='article_analysis_card__analyzed_url'
           href={url}
+          target='blank'
         />
       </span>
       <br />
