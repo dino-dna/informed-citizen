@@ -2,7 +2,9 @@
 
 a system to keep citizens informed as they graze the airwaves
 
-<a href="https://www.patreon.com/bePatron?u=21852476" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+<a href="https://www.patreon.com/bePatron?u=21852476" data-patreon-widget-type="become-patron-button">
+  <img height="30px" src="img/patreon.png" />
+</a>
 
 <p align="center">
   <img width='350px' src='img/ui.png' />
