@@ -29,6 +29,23 @@ export class App extends React.PureComponent<HomeProps> {
                   <br />
                   <b>Thank you!</b>
                 </p>
+                <h3>FAQ</h3>
+                <h4>Why was my article rated the way it was?</h4>
+                <p>
+                  Machines are assessing the articles here, and the assessments use
+                  math/numeric-methods to explain the contents. Computers aren't as smart as you or
+                  me. They are, however, much faster and tend to pick up on little things we may
+                  not.
+                  <br />
+                  <br />
+                  <b>We make no guarantees to the accurracy of our claims.</b>
+                </p>
+                <h4>Can article X be re-evaluated?</h4>
+                <p>
+                  At the current time, no. However, if you're interested in supporting
+                  re-evaluation, please feel free to get engaged with the project and support the
+                  feature!
+                </p>
               </div>
             )}
           />

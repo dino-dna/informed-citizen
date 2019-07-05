@@ -17,7 +17,7 @@ export function middleware (config: Config, logger: Logger): Koa.Middleware {
       query: { url: reportUrl = '' },
       params: { id }
     } = ctx
-    const parsed = url.parse(reportUrl)
+    const parsed = url.parse(decodeURIComponent(reportUrl))
     const { protocol = '', hostname = '', pathname = '' } = parsed
     if (!protocol || !hostname) {
       throw new Api400('missing or invalid url query provided')

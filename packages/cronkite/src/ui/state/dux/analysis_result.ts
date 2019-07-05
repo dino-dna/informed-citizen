@@ -5,6 +5,7 @@ import { ofType } from 'redux-observable'
 import { concatMap } from 'rxjs/operators'
 import { from, concat, of } from 'rxjs'
 import { analyze } from '../../util/analysis'
+import { navigate } from '@reach/router'
 
 type RequestAnalysis = FSA<'REQUEST_ANALYSIS', { url: string }>
 type HandleRequestAnalysisError = ErrorFSA<'HANDLE_REQUEST_ANALYSIS_ERROR'>
@@ -57,15 +58,16 @@ const requestAnalysisEpic$: Store.Epic = (action$, state$) =>
     ofType('REQUEST_ANALYSIS'),
     concatMap(action => {
       const reqAction = action as RequestAnalysis
+      const encodedUrl = encodeURIComponent(reqAction.payload.url)
       const requestObservable = from(
-        analyze({ fetch: window.fetch, url: reqAction.payload.url })
-          .then(
-            payload =>
-              ({
-                type: 'HANDLE_REQUEST_ANALYSIS_SUCCESS',
-                payload
-              } as HandleRequestAnalysisSuccess)
-          )
+        analyze({ fetch: window.fetch, url: encodedUrl })
+          .then(payload => {
+            navigate(`/report?url=${encodedUrl}`)
+            return {
+              type: 'HANDLE_REQUEST_ANALYSIS_SUCCESS',
+              payload
+            } as HandleRequestAnalysisSuccess
+          })
           .catch(
             () =>
               ({
