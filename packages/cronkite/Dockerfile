@@ -9,4 +9,4 @@ RUN npx tsc -p tsconfig.production.json && \
   npx del 'src/**/*.ts' && \
   yarn && \
   yarn cache clean
-CMD [ "node", "src/bin" ]
+CMD yarn migrate:db:up && node src/bin

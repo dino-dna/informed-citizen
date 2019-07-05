@@ -4,9 +4,6 @@
       "path": "."
     },
     {
-      "path": "packages/common"
-    },
-    {
       "path": "packages/cronkite"
     },
     // {

@@ -38,7 +38,8 @@
     "redux-logger":"^3.0.6",
     "redux-observable": "^1.1.0",
     "redux": "^4.0.1",
-    "rxjs": "^6.5.1"
+    "rxjs": "^6.5.1",
+    "typescript": "^3.4.5"
   },
   "devDependencies": {
     "@types/combined-stream":"^1.0.2",
@@ -67,10 +68,10 @@
     "react-scripts":"^3.0.1",
     "react-styleguidist": "^9.0.9",
     "react-docgen-typescript":"^1.12.5",
-    "ts-node": "^8",
-    "typescript": "^3.4.5"
+    "ts-node": "^8"
   },
   "scripts": {
+    "build:docker": "docker build -t cronkite .",
     "build": "tsc",
     "clean": "del knexfile.js knexfile.js.map '{src,scripts}/**/*{.js,.map,.d.ts}'",
     "create:migration": "knex --knexfile knexfile.ts migrate:make -x ts",

@@ -5,3 +5,4 @@ node_modules
 .DS_Store
 public
 reverse-proxy/*.toml
+deploy.sh

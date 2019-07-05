@@ -2,9 +2,13 @@ version: "3.7"
 services:
   scraper:
     image: smarp/newspaper-api
+    expose:
+      - "38765"
     restart: unless-stopped
   analyzer:
     image: machinebox/fakebox
+    expose:
+      - "8080"
     env_file:
       - informed.env
     restart: unless-stopped

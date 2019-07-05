@@ -15,10 +15,8 @@ export async function createMiddleware (logger: Logger) {
     application_name: 'informed'
   })
   return async function middleware (ctx: Koa.BaseContext, next: any) {
-    let isConnecting = false
     Object.defineProperty(ctx, 'getDb', {
       get () {
-        isConnecting = true
         return from(pool.connect())
           .pipe(timeout(3000))
           .toPromise()
