@@ -1,19 +1,13 @@
-import { Logger } from '../util/logger'
-import * as Koa from 'koa'
-import { Pool } from 'pg'
-import { from, TimeoutError } from 'rxjs'
-import { timeout } from 'rxjs/operators'
 import { Api503 } from '../errors'
+import { Config } from '../config'
+import { from, TimeoutError } from 'rxjs'
+import { Pool } from 'pg'
+import { Services } from '../services'
+import { timeout } from 'rxjs/operators'
+import * as Koa from 'koa'
 
-export async function createMiddleware (logger: Logger) {
-  const pool = new Pool({
-    user: process.env.CRONKITE_DB_USER,
-    database: process.env.POSTGRES_DB,
-    password: process.env.CRONKITE_DB_PASSWORD,
-    port: 5432,
-    host: process.env.DB_HOST || '127.0.0.1',
-    application_name: 'informed'
-  })
+export async function createMiddleware (config: Config, { logger }: Services) {
+  const pool = new Pool(config.db)
   return async function middleware (ctx: Koa.BaseContext, next: any) {
     Object.defineProperty(ctx, 'getDb', {
       get () {

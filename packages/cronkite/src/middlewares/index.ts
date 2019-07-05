@@ -1,6 +1,5 @@
 import { Config } from '../config'
 import { createMiddleware as createHelmetMiddleware } from './helmet'
-import { Logger } from '../util/logger'
 import { middleware as bodyParser } from './body-parser'
 import { middleware as compress } from './compress'
 import { middleware as createLoggerMiddleware } from './logger'
@@ -32,7 +31,7 @@ export async function createCommon (config: Config, services: Services) {
     { fn: createErrorHandlerMiddleware(logger), name: 'errorHandler' },
     { fn: createHelmetMiddleware(), name: 'helmet' },
     { fn: bodyParser, name: 'bodyParser' },
-    { fn: await createLazyDbMiddleware(logger), name: 'lazyDb' },
+    { fn: await createLazyDbMiddleware(config, services), name: 'lazyDb' },
     { fn: compress, name: 'compress' }
   ].map(toDebugMiddleware)
   return middlewares

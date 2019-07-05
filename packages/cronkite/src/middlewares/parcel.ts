@@ -10,6 +10,7 @@ import Bundler from 'parcel-bundler'
 import CombinedStream from 'combined-stream'
 import Koa from 'koa'
 import url from 'url'
+import { Config } from '../config'
 
 const capitalize = (s: string) => {
   if (typeof s !== 'string') return ''
@@ -17,6 +18,7 @@ const capitalize = (s: string) => {
 }
 
 export interface CreateParcelMiddlewareOptions {
+  config: Config
   entryHtmlFilename: string
   parcelOptions: Partial<Bundler.ParcelOptions>
   staticMiddleware: CreateMiddlewareConfig['staticMiddleware']
@@ -26,14 +28,18 @@ export interface CreateParcelMiddlewareOptions {
 const securityDirname = resolve(__dirname, '../../../../reverse-proxy/security')
 
 const toFacebookXml = ({
+  appId,
   claim,
   ctx,
+  origin,
   shortClaim,
   scoreCategory,
   title
 }: {
+  appId: string
   claim: string
   ctx: Koa.Context
+  origin: string
   shortClaim: string
   scoreCategory?: AnalysisRatingCategory
   title: string
@@ -42,16 +48,15 @@ const toFacebookXml = ({
 <meta property="og:type" content="article" />
 <meta property="og:title" content="${capitalize(shortClaim)} - Informed Citizen - AutoAnalysis" />
 <meta property="og:description" content="${capitalize(claim)}. analysis for article '${title}'" />
-<meta property="fb:app_id" content="${process.env.FACEBOOK_APP_ID}" />
+<meta property="fb:app_id" content="${appId}" />
 ${
   scoreCategory
-    ? `<meta property="og:image" content="${
-      process.env.ORIGIN
-    }/thumb_${scoreCategory.toLowerCase()}.png" />`
-    : `<meta property="og:image" content="${process.env.ORIGIN}/fist.png" />`
+    ? `<meta property="og:image" content="${origin}/thumb_${scoreCategory.toLowerCase()}.png" />`
+    : `<meta property="og:image" content="${origin}/fist.png" />`
 }
 `
 export function createParcelMiddleware ({
+  config,
   entryHtmlFilename,
   parcelOptions,
   staticMiddleware,
@@ -99,11 +104,13 @@ export function createParcelMiddleware ({
         if (!analysis) throw new WebApp404('no report source article url found')
         const metrics = getMetrics(analysis.report.analysis)
         injectedHead = toFacebookXml({
+          appId: config.facebookApiId,
           claim: getGeneralAnalysisClaim({
             ...metrics,
             contentDecision: analysis.report.analysis.content.decision
           }) as string,
           ctx,
+          origin: config.origin,
           scoreCategory: metrics.scoreCategory,
           shortClaim: getShortAnalysisClaim({ ...metrics }),
           title: analysis.report.title
