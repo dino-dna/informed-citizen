@@ -9,4 +9,5 @@ RUN npx tsc -p tsconfig.production.json && \
   npx del 'src/**/*.ts' && \
   yarn && \
   yarn cache clean
-CMD yarn migrate:db:up && node src/bin
+CMD npx knex --knexfile knexfile.js migrate:latest && \
+  node src/bin

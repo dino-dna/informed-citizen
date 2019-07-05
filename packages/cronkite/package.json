@@ -71,7 +71,7 @@
     "react-docgen-typescript":"^1.12.5"
   },
   "scripts": {
-    "build:docker": "docker build -t cronkite .",
+    "build:docker": "docker build -t cdaringe/cronkite .",
     "build": "tsc",
     "clean": "del knexfile.js knexfile.js.map '{src,scripts}/**/*{.js,.map,.d.ts}'",
     "create:migration": "knex --knexfile knexfile.ts migrate:make -x ts",

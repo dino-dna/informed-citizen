@@ -10,6 +10,7 @@ dotenv.config()
 const {
   CRONKITE_DB_USER,
   CRONKITE_DB_PASSWORD,
+  DB_HOST,
   POSTGRES_DB,
   POSTGRES_PASSWORD,
   POSTGRES_USER
@@ -20,14 +21,14 @@ const config: knex.Config = {
   connection: {
     user: POSTGRES_USER,
     database: POSTGRES_DB,
-    host: 'localhost',
+    host: DB_HOST || 'localhost',
     port: 5432,
     password: isMigrating ? POSTGRES_PASSWORD : ''
   },
   migrations: {
     database: POSTGRES_DB || '',
     directory: 'src/migrations',
-    extension: 'ts'
+    extension: isDev ? 'ts' : 'js'
   }
 }
 
