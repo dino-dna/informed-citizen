@@ -20,10 +20,10 @@ const config: knex.Config = {
   client: 'pg',
   connection: {
     user: isMigrating ? POSTGRES_USER : CRONKITE_DB_USER,
-    database: isMigrating ? POSTGRES_DB : CRONKITE_DB_PASSWORD,
+    database: POSTGRES_DB,
     host: DB_HOST || 'localhost',
     port: 5432,
-    password: isMigrating ? POSTGRES_PASSWORD : ''
+    password: isMigrating ? POSTGRES_PASSWORD : CRONKITE_DB_PASSWORD
   },
   migrations: {
     database: POSTGRES_DB || '',
