@@ -1,8 +1,9 @@
 .article_analysis_card--container {
   border-radius: 4px;
   box-shadow: 0 0 4px 1px lightslategray;
+  clear: both;
   padding: 10px;
-  max-width: 500px;
+  max-width: 95vw;
 }
 
 .article_analysis_card__header {

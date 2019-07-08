@@ -4,22 +4,27 @@
   box-sizing: border-box;
 }
 
+.AnalyzeArticleRequestForm__try-it {
+  margin-top: 8px;
+}
+
 .AnalyzeArticleRequestForm_url {
-  /* border-radius: 2px; */
-  /* border: 1px lightgray solid; */
   font-size: 75px;
   padding: 6px;
   min-width: 250px;
   width: 100%;
-  /* box-sizing: border-box; */
 }
 
 .AnalyzeArticleRequestForm_submit {
   width: 100%;
-  /* padding: 10px;
-  background: rgb(65, 65, 255);
-  color: white;
-  border: 0;
-  border-radius: 4px;
-  margin-top: 4px; */
+  margin-bottom: 0;
+}
+
+@media only screen and (max-width: 800px) {
+  .AnalyzeArticleRequestForm_url {
+    font-size: initial;
+    padding: 6px;
+    font-size: 36px;
+    width: 100%;
+  }
 }

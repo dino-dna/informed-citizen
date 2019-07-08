@@ -8,12 +8,9 @@ import { Patreon } from './patreon'
 export type HomeProps = Store.All & Store.WithDispatch
 
 class Home extends React.PureComponent<HomeProps, { url: string }> {
-  analysisCardEl: React.RefObject<HTMLDivElement>
-
   constructor (props: any) {
     super(props)
     this.state = { url: '' }
-    this.analysisCardEl = React.createRef()
   }
   onAnalyze = (url: string) => {
     this.props.dispatch({
@@ -23,14 +20,6 @@ class Home extends React.PureComponent<HomeProps, { url: string }> {
   }
   onChangeUrl = (url: string) => {
     this.setState({ url })
-  }
-  componentDidUpdate () {
-    if (this.props.analysisResult.scrollIntoView) {
-      if (!this.analysisCardEl || !this.analysisCardEl.current) {
-        return
-      }
-      this.analysisCardEl.current.scrollIntoView({ behavior: 'smooth' })
-    }
   }
   render () {
     const props = this.props
@@ -52,9 +41,9 @@ class Home extends React.PureComponent<HomeProps, { url: string }> {
           {!!props.analysisResult.loading && <Ripple />}
           {!!props.analysisResult.value && (
             <ArticleAnalysisCard
-              ref={this.analysisCardEl}
               url={url}
               analysisReport={props.analysisResult.value}
+              scrollIntoView={props.analysisResult.scrollIntoView}
             />
           )}
           {!!props.analysisResult.error && (

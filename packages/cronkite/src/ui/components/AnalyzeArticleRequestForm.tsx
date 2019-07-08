@@ -22,24 +22,7 @@ class AnalyzeArticleRequestForm extends React.PureComponent<Props> {
     const { className = '', onAnalzye, disabled, url, onChangeUrl, ...rest } = this.props
     return (
       <form className={`${className} AnalyzeArticleRequestForm`} {...rest}>
-        <p>
-          Analyze a page for fake & biased content.
-          <button
-            type='button'
-            className='btn-small'
-            onClick={evt => {
-              evt.preventDefault()
-              evt.stopPropagation()
-              onChangeUrl(FAKE_ARTICLE_URL)
-              onAnalzye(FAKE_ARTICLE_URL)
-              const el = this.inputEl!.current!
-              el.selectionStart = el.selectionEnd = el.value.length
-            }}
-            style={{ marginLeft: 10 }}
-          >
-            Try it
-          </button>
-        </p>
+        <p>Analyze a page for fake & biased content.</p>
         <input
           className='AnalyzeArticleRequestForm_url'
           maxLength={1000}
@@ -63,6 +46,21 @@ class AnalyzeArticleRequestForm extends React.PureComponent<Props> {
           children='Analyze'
           disabled={disabled}
         />
+        <div style={{ textAlign: 'right' }}>
+          <button
+            type='button'
+            className='AnalyzeArticleRequestForm__try-it btn-small'
+            onClick={evt => {
+              evt.preventDefault()
+              evt.stopPropagation()
+              onChangeUrl(FAKE_ARTICLE_URL)
+              onAnalzye(FAKE_ARTICLE_URL)
+              const el = this.inputEl!.current!
+              el.selectionStart = el.selectionEnd = el.value.length
+            }}
+            children='Try it'
+          />
+        </div>
       </form>
     )
   }
