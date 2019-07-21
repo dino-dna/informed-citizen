@@ -7,6 +7,7 @@ import knexConfig from '../knexfile'
 import knexInitializer from 'knex'
 
 require('perish')
+require('isomorphic-fetch')
 
 const projectRootDirname = path.resolve(__dirname, '..')
 const uiHtmlEntryFilename = path.resolve(projectRootDirname, './src/ui/index.html')
