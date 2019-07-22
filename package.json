@@ -64,6 +64,10 @@
     ],
     "ignore": [
       "**/*.d.ts"
+    ],
+    "env": [
+      "browser",
+      "node"
     ]
   }
 }
