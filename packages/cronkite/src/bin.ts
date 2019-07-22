@@ -5,6 +5,7 @@ import path from 'path'
 import dotenv from 'dotenv-safe'
 import knexConfig from '../knexfile'
 import knexInitializer from 'knex'
+import { Pool } from 'pg'
 
 require('perish')
 require('isomorphic-fetch')
@@ -42,4 +43,8 @@ const knex = knexInitializer(knexConfig)
 Object.keys(process.env).forEach(key => {
   if (key.match(/cronkite|postgres|mb_key/i)) delete process.env[key]
 })
-start(config, { logger: create({ level: config.logLevel }), knex })
+start(config, {
+  knex,
+  logger: create({ level: config.logLevel }),
+  pool: new Pool(config.db)
+})
