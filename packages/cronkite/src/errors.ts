@@ -38,6 +38,9 @@ Api409.defaultMessage = 'Conflict'
 export class Api500 extends ApiError {}
 Api500.status = 500
 Api500.defaultMessage = 'Internal error.  File a bug to us, please!'
+export class Api502 extends ApiError {}
+Api500.status = 502
+Api500.defaultMessage = 'Bad gateway'
 export class Api503 extends ApiError {}
 Api500.status = 503
 Api500.defaultMessage = 'Service unavailable'

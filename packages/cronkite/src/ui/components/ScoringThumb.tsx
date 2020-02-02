@@ -14,10 +14,10 @@ const ScoringThumb: React.FC<
     category === AnalysisRatingCategory.GOOD
       ? { color: 'green', degrees: 0 }
       : category === AnalysisRatingCategory.OK
-        ? { color: 'lightgreen', degrees: 45 }
-        : category === AnalysisRatingCategory.NEUTRAL
-          ? { color: 'orange', degrees: 90 }
-          : { color: 'red', degrees: 180 }
+      ? { color: 'lightgreen', degrees: 45 }
+      : category === AnalysisRatingCategory.NEUTRAL
+      ? { color: 'orange', degrees: 90 }
+      : { color: 'red', degrees: 180 }
   // eslint-disable-end
   return (
     <Thumb

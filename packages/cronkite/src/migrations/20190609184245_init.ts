@@ -9,15 +9,18 @@ export async function up (knex: Knex): Promise<any> {
   await knex.raw(`
     create table analyses (
       id serial primary key,
-      urlkey varchar,
-      report jsonb
+      requested_urlkey varchar not null,
+      scraped_urlkey varchar not null,
+      report jsonb not null
     );
   `)
-  await knex.raw(`create unique index urlkey_idx on analyses (urlkey)`)
+  await knex.raw(`create unique index requested_urlkey_idx on analyses (requested_urlkey)`)
+  await knex.raw(`create unique index scraped_urlkey_idx on analyses (scraped_urlkey)`)
   await knex.raw(`
-    insert into analyses (urlkey, report) values
-      ('htts://bad.org', '{"thing": 1, "thang": "zone"}'),
-      ('htts://evil.net', '{"bad stuff": 1, "thang": "zone"}');;
+    create table analyze_queue (
+      id serial primary key,
+      source_url varchar not null
+    );
   `)
   await knex.raw(`
     grant all privileges on database ${POSTGRES_DB} to ${CRONKITE_DB_USER};
@@ -35,5 +38,6 @@ export async function down (knex: Knex): Promise<any> {
     revoke all privileges on database ${POSTGRES_DB} from ${CRONKITE_DB_USER};
     drop user ${CRONKITE_DB_USER};
     drop table analyses cascade;
+    drop table analyze_queue;
   `)
 }

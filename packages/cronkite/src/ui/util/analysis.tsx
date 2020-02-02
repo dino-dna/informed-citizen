@@ -44,10 +44,10 @@ export const mapNetScoreToCategory = (score: number) =>
   score >= 0.85
     ? AnalysisRatingCategory.GOOD
     : score >= 0.75
-      ? AnalysisRatingCategory.OK
-      : score >= 0.65
-        ? AnalysisRatingCategory.NEUTRAL
-        : AnalysisRatingCategory.BAD
+    ? AnalysisRatingCategory.OK
+    : score >= 0.65
+    ? AnalysisRatingCategory.NEUTRAL
+    : AnalysisRatingCategory.BAD
 
 export const getShortAnalysisClaim = ({
   isBiased,

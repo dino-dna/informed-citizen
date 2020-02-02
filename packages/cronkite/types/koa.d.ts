@@ -1,4 +1,3 @@
-import { Context } from 'koa'
 import { PoolClient } from 'pg'
 
 declare module 'koa' {

@@ -6,8 +6,7 @@ import { Services } from '../services'
 import { timeout } from 'rxjs/operators'
 import * as Koa from 'koa'
 
-export async function createMiddleware (config: Config, { logger }: Services) {
-  const pool = new Pool(config.db)
+export async function createMiddleware (config: Config, { logger, pool }: Services) {
   return async function middleware (ctx: Koa.BaseContext, next: any) {
     Object.defineProperty(ctx, 'getDb', {
       get () {
@@ -16,7 +15,7 @@ export async function createMiddleware (config: Config, { logger }: Services) {
           .toPromise()
           .then(db => {
             ;(ctx as any).__db = db
-            logger.info(`${pool.idleCount} free connections of ${pool.totalCount}`)
+            logger.info(`${pool.idleCount} idle, ${pool.waitingCount} waiting of ${pool.totalCount}`)
             return db
           })
           .catch(err => {

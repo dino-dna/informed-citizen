@@ -1,50 +1,49 @@
-import { Config } from './config'
+import 'perish'
 import { create } from './util/logger'
+import { create as createReporter } from './services/reporter'
+import { get } from './config'
+import { isDev } from './common'
+import { Pool } from 'pg'
+import { pruneEnv as pruneEnvSecrets } from './util/secrets'
+import { Services } from './services'
 import { start } from './server'
-import path from 'path'
 import dotenv from 'dotenv-safe'
 import knexConfig from '../knexfile'
 import knexInitializer from 'knex'
-import { Pool } from 'pg'
+import path from 'path'
 
-require('perish')
 require('isomorphic-fetch')
 
 const projectRootDirname = path.resolve(__dirname, '..')
 const uiHtmlEntryFilename = path.resolve(projectRootDirname, './src/ui/index.html')
 const staticDirname = path.resolve(projectRootDirname, 'public')
+const envFilename = path.resolve(projectRootDirname, `.env.${process.env.NODE_ENV}`)
 
-dotenv.load({
-  path: path.resolve(projectRootDirname, `.env.${process.env.NODE_ENV}`)
-})
-const config: Config = {
-  analyzerApiEndpoint: process.env.ANALYZER_API_ENDPOINT || 'http://localhost:8080/fakebox/check',
-  db: {
-    user: process.env.CRONKITE_DB_USER!,
-    database: process.env.POSTGRES_DB!,
-    password: process.env.CRONKITE_DB_PASSWORD!,
-    port: 5432,
-    host: process.env.DB_HOST || '127.0.0.1',
-    application_name: 'informed'
-  },
-  logLevel: (process.env.LOG_LEVEL as any) || 'info',
-  origin: process.env.ORIGIN!,
-  facebookApiId: process.env.FACEBOOK_APP_ID || '',
+dotenv.load({ path: envFilename })
+
+const config = get({
+  isDev,
   paths: {
     projectRootDirname,
     staticDirname,
     uiHtmlEntryFilename
-  },
-  port: process.env.PORT ? parseInt(process.env.PORT) : 7777,
-  scraperApiEndpoint: process.env.SCRAPER_API_ENDPOINT || 'http://localhost:38765/'
-}
-
+  }
+})
 const knex = knexInitializer(knexConfig)
-Object.keys(process.env).forEach(key => {
-  if (key.match(/cronkite|postgres|mb_key/i)) delete process.env[key]
-})
-start(config, {
+pruneEnvSecrets()
+
+const pool = new Pool(config.db)
+const partialServices: Services = {
   knex,
-  logger: create({ level: config.logLevel }),
-  pool: new Pool(config.db)
-})
+  logger: create({
+    level: config.logLevel,
+    prettyPrint: config.logPrettyPrint
+  }),
+  pool,
+  reporter: null as any
+}
+const services: Services = {
+  ...partialServices,
+  reporter: createReporter(config, partialServices)
+}
+start(config, services)

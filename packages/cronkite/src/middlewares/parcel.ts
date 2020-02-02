@@ -4,7 +4,7 @@ import { isDev, AnalysisResult, AnalysisRatingCategory } from '../common'
 import { readFile } from 'fs-extra'
 import { resolve } from 'path'
 import { Services } from '../services'
-import { toUrlkey } from '../util/analysis'
+import { toUrlKey } from '../util/analysis'
 import { WebAppUnavailableError, WebApp404 } from '../errors'
 import Bundler from 'parcel-bundler'
 import CombinedStream from 'combined-stream'
@@ -15,14 +15,6 @@ import { Config } from '../config'
 const capitalize = (s: string) => {
   if (typeof s !== 'string') return ''
   return s.charAt(0).toUpperCase() + s.slice(1)
-}
-
-export interface CreateParcelMiddlewareOptions {
-  config: Config
-  entryHtmlFilename: string
-  parcelOptions: Partial<Bundler.ParcelOptions>
-  staticMiddleware: CreateMiddlewareConfig['staticMiddleware']
-  services: Services
 }
 
 const securityDirname = resolve(__dirname, '../../../../reverse-proxy/security')
@@ -55,10 +47,15 @@ ${
     : `<meta property="og:image" content="${origin}/fist.png" />`
 }
 `
+
+export interface CreateParcelMiddlewareOptions {
+  config: Config
+  staticMiddleware: CreateMiddlewareConfig['staticMiddleware']
+  services: Services
+}
+
 export function createParcelMiddleware ({
   config,
-  entryHtmlFilename,
-  parcelOptions,
   staticMiddleware,
   services
 }: CreateParcelMiddlewareOptions) {
@@ -72,13 +69,14 @@ export function createParcelMiddleware ({
     hmrPort: isDev ? 7778 : -1,
     https: isDev
       ? ({
-        cert: resolve(securityDirname, 'cert.pem'),
-        key: resolve(securityDirname, 'key.pem')
-      } as Bundler.HttpsOptions)
+          cert: resolve(securityDirname, 'cert.pem'),
+          key: resolve(securityDirname, 'key.pem')
+        } as Bundler.HttpsOptions)
       : false,
-    ...parcelOptions
+    outDir: config.paths.staticDirname,
+    outFile: resolve(config.paths.staticDirname, 'index.html')
   }
-  const bundler = new Bundler(entryHtmlFilename, options)
+  const bundler = new Bundler(config.paths.uiHtmlEntryFilename, options)
   let builtEntrypointFilename = ''
   bundler.bundle()
   bundler.on('bundled', bundle => {
@@ -90,9 +88,7 @@ export function createParcelMiddleware ({
     renderHtmlMiddleware: async (ctx, next) => {
       if (!builtEntrypointFilename) throw new WebAppUnavailableError()
       const reportUrl = (ctx.query.url || '').trim()
-      const parsed = url.parse(reportUrl)
-      const { hostname = '', pathname = '' } = parsed
-      const urlkey = toUrlkey({ hostname, pathname })
+      const urlkey = reportUrl ? toUrlKey({ url: reportUrl }) : ''
       const outFileBuffer = await readFile(builtEntrypointFilename)
       const [preHead, postHead] = outFileBuffer.toString().split(/<head>/)
       let injectedHead = ''
@@ -100,7 +96,7 @@ export function createParcelMiddleware ({
         const [analysis] = await services.knex
           .columns('id', 'report')
           .from<{ id: number; report: AnalysisResult }>('analyses')
-          .where('urlkey', urlkey)
+          .where('requested_urlkey', urlkey)
         if (!analysis) throw new WebApp404('no report source article url found')
         const metrics = getMetrics(analysis.report.analysis)
         injectedHead = toFacebookXml({

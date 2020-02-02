@@ -62,11 +62,13 @@ const requestAnalysisEpic$: Store.Epic = (action$, state$) =>
       const requestObservable = from(
         analyze({ fetch: window.fetch, url: encodedUrl })
           .then(payload => {
-            navigate(`/report?url=${encodedUrl}`)
-            return {
-              type: 'HANDLE_REQUEST_ANALYSIS_SUCCESS',
-              payload
-            } as HandleRequestAnalysisSuccess
+            return { type: 'NOOP', payload: null } as any
+            // @TODO do something else
+            // navigate(`/report?url=${encodedUrl}`)
+            // return {
+            //   type: 'HANDLE_REQUEST_ANALYSIS_SUCCESS',
+            //   payload
+            // } as HandleRequestAnalysisSuccess
           })
           .catch(
             () =>

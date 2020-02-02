@@ -1,11 +1,11 @@
 import './App.css'
+import { connect } from 'react-redux'
+import { Patreon } from './patreon'
 import { Router } from '@reach/router'
+import Home, { HomeProps } from './Home'
 import Nav from './Nav'
 import React from 'react'
 import Routable from './components/Routableable'
-import { connect } from 'react-redux'
-import Home, { HomeProps } from './Home'
-import { Patreon } from './patreon'
 
 export class App extends React.PureComponent<HomeProps> {
   render () {

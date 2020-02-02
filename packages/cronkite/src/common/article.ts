@@ -73,6 +73,7 @@ export interface ArticleAnalysis {
 }
 
 export interface AnalysisResult {
+  url: string
   analysis: ArticleAnalysis
   text: string
   title: string
